@@ -29,7 +29,10 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
+    @GetMapping
+    public List<Product> getAllProducts(@RequestParam("id_merchant") Long id_merchant, @RequestParam("name") String name) {
+        return productService.findAllByMerchantAndNameProduct(id_merchant, name);
+    }
     @PostMapping()
     public ResponseEntity<String> save(@RequestBody Product product){
         productService.save(product);

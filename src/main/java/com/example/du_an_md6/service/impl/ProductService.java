@@ -7,6 +7,7 @@ import com.example.du_an_md6.repository.IProductRepository;
 import com.example.du_an_md6.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 @Service
@@ -40,5 +41,9 @@ public class ProductService implements IProductService {
     @Override
     public List<Product> findProductMerchant(Long id_merchant) {
         return productRepository.findProductMerchant(id_merchant) ;
+    }
+    @Transactional(readOnly = true)
+    public List<Product> findAllByMerchantAndNameProduct(Long id_merchant, String name) {
+        return productRepository.findAllByMerchantAndNameProduct(id_merchant, "%" + name + "%");
     }
 }

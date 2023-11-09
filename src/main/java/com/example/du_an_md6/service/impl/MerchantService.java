@@ -1,6 +1,7 @@
 package com.example.du_an_md6.service.impl;
 
 import com.example.du_an_md6.model.Merchant;
+import com.example.du_an_md6.model.Product;
 import com.example.du_an_md6.repository.IMerchantRepository;
 import com.example.du_an_md6.service.IMerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.util.List;
 public class MerchantService implements IMerchantService {
     @Autowired
     IMerchantRepository merchantRepository;
+
     @Override
     public List<Merchant> findAll() {
         return merchantRepository.findAll();
@@ -20,7 +22,7 @@ public class MerchantService implements IMerchantService {
 
     @Override
     public Merchant findById(Long id) {
-        if (merchantRepository.findById(id).isPresent()){
+        if (merchantRepository.findById(id).isPresent()) {
             return merchantRepository.findById(id).get();
         } else {
             return null;
@@ -33,15 +35,14 @@ public class MerchantService implements IMerchantService {
     }
 
 
-    public Merchant findMerchantByIdAcc(Long id_account){
+    public Merchant findMerchantByIdAcc(Long id_account) {
         Merchant merchant = null;
         List<Merchant> merchants = findAll();
         for (Merchant m : merchants) {
-            if (m.getAccount().getId_account().equals(id_account)){
+            if (m.getAccount().getId_account().equals(id_account)) {
                 return merchant = m;
             }
         }
         return merchant;
     }
-
 }

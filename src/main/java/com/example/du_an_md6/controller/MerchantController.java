@@ -1,10 +1,7 @@
 package com.example.du_an_md6.controller;
 
 import com.example.du_an_md6.mapper.MerchantMapper;
-import com.example.du_an_md6.model.Account;
-import com.example.du_an_md6.model.Activity;
-import com.example.du_an_md6.model.Address;
-import com.example.du_an_md6.model.Merchant;
+import com.example.du_an_md6.model.*;
 import com.example.du_an_md6.model.dto.MerchantDTO;
 import com.example.du_an_md6.repository.IActivityRepository;
 import com.example.du_an_md6.service.IMerchantService;
