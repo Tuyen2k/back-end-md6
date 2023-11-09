@@ -1,0 +1,3 @@
+URL_DB=jdbc:mysql://localhost:3306/projectmd6
+USERNAME=root
+PASSWORD=123456

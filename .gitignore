@@ -25,6 +25,7 @@ database_varinable.env
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+database_varinable
 
 ### NetBeans ###
 /nbproject/private/

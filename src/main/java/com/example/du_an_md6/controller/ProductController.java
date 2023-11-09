@@ -35,6 +35,11 @@ public class ProductController {
         productService.save(product);
         return ResponseEntity.ok("Create success!!!");
     }
-
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        Product product = productService.findById(id);
+        product.setDelete(true);
+        productService.save(product);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
