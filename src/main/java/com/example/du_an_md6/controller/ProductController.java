@@ -1,4 +1,5 @@
 package com.example.du_an_md6.controller;
+
 import com.example.du_an_md6.model.Product;
 import com.example.du_an_md6.model.dto.ProductDTO;
 import com.example.du_an_md6.service.IProductService;
@@ -38,12 +39,16 @@ public class ProductController {
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
+    @GetMapping
+    public List<Product> getAllProducts(@RequestParam("id_merchant") Long id_merchant,
+                                        @RequestParam("name") String name) {
+        return productService.findAllByMerchantAndNameProduct(id_merchant, name);
+    }
     @PostMapping()
     public ResponseEntity<String> save(@RequestBody Product product){
         productService.save(product);
         return ResponseEntity.ok("Create success!!!");
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
         Product product = productService.findById(id);
