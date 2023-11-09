@@ -33,6 +33,12 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public List<Product> filterProduct(String name, Long id_category) {
+        String str = '%'+name+'%';
+        return productRepository.filterProduct(str,id_category);
+    }
+
+    @Override
     public void save(Product product) {
         productRepository.save(product);
     }
@@ -41,4 +47,5 @@ public class ProductService implements IProductService {
     public List<Product> findProductMerchant(Long id_merchant) {
         return productRepository.findProductMerchant(id_merchant) ;
     }
+
 }

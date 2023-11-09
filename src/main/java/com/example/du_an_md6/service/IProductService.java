@@ -10,4 +10,5 @@ public interface IProductService extends IGenerateService<Product> {
     List<Product> findProductMerchant(Long  id_merchant);
 
     ProductDTO getProductDTO(Long id_product);
+    List<Product> filterProduct (String name, Long id_category);
 }
