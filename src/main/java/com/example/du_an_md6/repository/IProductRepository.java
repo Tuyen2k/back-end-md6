@@ -7,9 +7,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface IProductRepository  extends JpaRepository<Product,Long> {
+    @Query(nativeQuery = true, value = "select * from product where id_product = ? and is_delete = FALSE")
+    Optional<Product> findByIdActivity(Long id);
     @Query(value = "SELECT * FROM product WHERE id_merchant = ? AND is_delete = false", nativeQuery = true)
     List<Product> findProductMerchant(Long id_merchant);
     @Query(value = "SELECT p.* FROM product AS p JOIN merchant AS m ON p.id_merchant = m.id_merchant WHERE m.id_merchant = ? AND p.name LIKE %?% AND p.is_delete = false", nativeQuery = true)

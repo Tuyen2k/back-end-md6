@@ -30,7 +30,7 @@ public class ProductService implements IProductService {
 
     @Override
     public ProductDTO getProductDTO(Long id_product) {
-        return productMapper.toDto(productRepository.findById(id_product).orElse(null));
+        return productMapper.toDto(productRepository.findByIdActivity(id_product).orElse(null));
     }
 
     @Override
