@@ -11,4 +11,9 @@ import java.util.List;
 public interface IProductRepository  extends JpaRepository<Product,Long> {
     @Query(value = "select * from product where id_merchant = ? ",nativeQuery = true)
     List<Product> findProductMerchant( Long  id_merchant);
+
+    List<Product> findProductByNameContains(String name);
+    @Query(value = "select * from product as p join product_category as pc on p.id_product = pc.id_product where pc.id_category = ? group by p.id_product",nativeQuery = true)
+    List<Product> findProductByCategory(Long id_category);
+
 }
