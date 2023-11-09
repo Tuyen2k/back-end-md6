@@ -16,7 +16,7 @@ public interface IProductRepository  extends JpaRepository<Product,Long> {
     List<Product> findAllByMerchantAndNameProduct(Long id_merchant, String name);
     @Query(nativeQuery = true,value = "select p.* from product as p\n" +
             "join product_category pc on p.id_product = pc.id_product\n" +
-            "where p.name like ?  and pc.id_category = ? \n" +
+            "where p.name like ?  and pc.id_category = ? and p.is_delete = FALSE \n" +
             "group by p.id_product ")
     List<Product> filterProduct(@Param("name") String name, @Param("category") Long id_category );
 }
