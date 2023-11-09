@@ -1,5 +1,6 @@
 package com.example.du_an_md6.controller;
 
+import com.example.du_an_md6.mapper.ProductMapper;
 import com.example.du_an_md6.model.Product;
 import com.example.du_an_md6.model.dto.ProductDTO;
 import com.example.du_an_md6.service.IProductService;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private IProductService productService ;
+    private ProductMapper productMapper ;
     @GetMapping("{id_merchant}")
     public ResponseEntity<List<Product>> findProductMerchant (@PathVariable Long id_merchant){
         return new ResponseEntity<>(productService.findProductMerchant(id_merchant), HttpStatus.OK);
@@ -38,5 +40,17 @@ public class ProductController {
         productService.save(product);
         return ResponseEntity.ok("Create success!!!");
     }
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        Product product = productService.findById(id);
+        product.setDelete(true);
+        productService.save(product);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @PostMapping("/filter")
+    public ResponseEntity<List<ProductDTO>> filterProduct(@RequestParam( value = "name",required = false) String name,
+                                                          @RequestParam(value = "category") Long id_category ){
+        List<ProductDTO> list = productMapper.toListDto(productService.filterProduct(name,id_category));
+        return  new ResponseEntity<>(list,HttpStatus.OK);
+    }
 }
