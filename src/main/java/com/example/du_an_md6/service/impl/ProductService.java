@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ProductService implements IProductService {
     @Autowired
@@ -18,9 +20,16 @@ public class ProductService implements IProductService {
     @Autowired
     private ProductMapper productMapper;
 
+    @Autowired
+    private CategoryService categoryService;
+
     @Override
     public List<Product> findAll() {
-        return null;
+        return productRepository.findAll();
+    }
+    @Override
+    public List<ProductDTO> getAll(){
+        return productMapper.toListDto(productRepository.findAll());
     }
 
     @Override
@@ -34,12 +43,6 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<Product> filterProduct(String name, Long id_category) {
-        String str = '%'+name+'%';
-        return productRepository.filterProduct(str,id_category);
-    }
-
-    @Override
     public void save(Product product) {
         productRepository.save(product);
     }
@@ -47,6 +50,10 @@ public class ProductService implements IProductService {
     @Override
     public List<Product> findProductMerchant(Long id_merchant) {
         return productRepository.findProductMerchant(id_merchant) ;
+    }
+    @Override
+    public List<Product> findProductsByCategory(Long id_category){
+        return productRepository.findProductByCategory(id_category);
     }
     @Transactional(readOnly = true)
     public List<Product> findAllByMerchantAndNameProduct(Long id_merchant, String name) {

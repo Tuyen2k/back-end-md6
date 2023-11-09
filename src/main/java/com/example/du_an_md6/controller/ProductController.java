@@ -1,9 +1,9 @@
 package com.example.du_an_md6.controller;
 
-import com.example.du_an_md6.mapper.ProductMapper;
 import com.example.du_an_md6.model.Product;
 import com.example.du_an_md6.model.dto.ProductDTO;
 import com.example.du_an_md6.service.IProductService;
+import com.example.du_an_md6.service.impl.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,6 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private IProductService productService ;
-    private ProductMapper productMapper ;
     @GetMapping("{id_merchant}")
     public ResponseEntity<List<Product>> findProductMerchant (@PathVariable Long id_merchant){
         return new ResponseEntity<>(productService.findProductMerchant(id_merchant), HttpStatus.OK);
@@ -31,8 +30,15 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
     @GetMapping
-    public List<Product> getAllProducts(@RequestParam("id_merchant") Long id_merchant, @RequestParam("name") String name) {
+    public ResponseEntity<List<ProductDTO>> findAllProduct() {
+        return new ResponseEntity<>(productService.getAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public List<Product> searchProductForMerchant(@RequestParam("id_merchant") Long id_merchant,
+                                        @RequestParam("name") String name) {
         return productService.findAllByMerchantAndNameProduct(id_merchant, name);
     }
     @PostMapping()
@@ -47,10 +53,12 @@ public class ProductController {
         productService.save(product);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @PostMapping("/filter")
-    public ResponseEntity<List<ProductDTO>> filterProduct(@RequestParam( value = "name",required = false) String name,
-                                                          @RequestParam(value = "category") Long id_category ){
-        List<ProductDTO> list = productMapper.toListDto(productService.filterProduct(name,id_category));
-        return  new ResponseEntity<>(list,HttpStatus.OK);
+    @GetMapping("/search/{id}")
+    public ResponseEntity<List<Product>> searchByCategory(@PathVariable Long id){
+        if (!productService.findProductsByCategory(id).isEmpty()){
+            return new ResponseEntity<>(productService.findProductsByCategory(id) ,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
