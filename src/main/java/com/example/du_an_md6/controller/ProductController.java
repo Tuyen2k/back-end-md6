@@ -17,8 +17,6 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private IProductService productService ;
-    @Autowired
-    private ProductService productS;
     @GetMapping("{id_merchant}")
     public ResponseEntity<List<Product>> findProductMerchant (@PathVariable Long id_merchant){
         return new ResponseEntity<>(productService.findProductMerchant(id_merchant), HttpStatus.OK);
@@ -35,7 +33,7 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductDTO>> findAllProduct() {
-        return new ResponseEntity<>(productS.getAll(), HttpStatus.OK);
+        return new ResponseEntity<>(productService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/search")
@@ -57,8 +55,8 @@ public class ProductController {
     }
     @GetMapping("/search/{id}")
     public ResponseEntity<List<Product>> searchByCategory(@PathVariable Long id){
-        if (!productS.findProductsByCategory(id).isEmpty()){
-            return new ResponseEntity<>(productS.findProductsByCategory(id) ,HttpStatus.OK);
+        if (!productService.findProductsByCategory(id).isEmpty()){
+            return new ResponseEntity<>(productService.findProductsByCategory(id) ,HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
