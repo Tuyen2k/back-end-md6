@@ -34,12 +34,11 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> findAllProduct() {
-        List<Product> productList = productService.findAll();
-        return new ResponseEntity<>(productList, HttpStatus.OK);
+    public ResponseEntity<List<ProductDTO>> findAllProduct() {
+        return new ResponseEntity<>(productS.getAll(), HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/search")
     public List<Product> getAllProducts(@RequestParam("id_merchant") Long id_merchant,
                                         @RequestParam("name") String name) {
         return productService.findAllByMerchantAndNameProduct(id_merchant, name);
