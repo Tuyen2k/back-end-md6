@@ -37,7 +37,7 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public List<Product> getAllProducts(@RequestParam("id_merchant") Long id_merchant,
+    public List<Product> searchProductForMerchant(@RequestParam("id_merchant") Long id_merchant,
                                         @RequestParam("name") String name) {
         return productService.findAllByMerchantAndNameProduct(id_merchant, name);
     }
