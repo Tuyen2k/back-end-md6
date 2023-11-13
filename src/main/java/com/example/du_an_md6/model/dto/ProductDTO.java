@@ -15,6 +15,7 @@ public class ProductDTO {
     private double price;
     private double priceSale;
     private String image;
+    private String description;
     private boolean isDelete;
     private List<Category> categories;
     private int view;
