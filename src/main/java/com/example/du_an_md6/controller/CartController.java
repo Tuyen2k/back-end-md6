@@ -27,4 +27,15 @@ public class CartController {
         List<CartDetailDTO> cartDetails = iCartDetailService.getAllCartDetailByCart(cart.getId_cart());
         return ResponseEntity.ok(cartDetails);
     }
+
+
+    @GetMapping("/account/{id}/update/{quantity}")
+    public ResponseEntity<String> updateQuantityInCart(@PathVariable("id") Long id_cartDetail,
+                                             @PathVariable("quantity") int quantity){
+        CartDetail cartDetail = iCartDetailService.findById(id_cartDetail);
+        cartDetail.setQuantity(quantity);
+        iCartDetailService.save(cartDetail);
+        return ResponseEntity.ok("Update success!");
+    }
+
 }
