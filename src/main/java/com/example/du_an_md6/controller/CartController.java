@@ -3,6 +3,7 @@ package com.example.du_an_md6.controller;
 
 import com.example.du_an_md6.model.Cart;
 import com.example.du_an_md6.model.CartDetail;
+import com.example.du_an_md6.model.dto.CartDetailDTO;
 import com.example.du_an_md6.service.ICartDetailService;
 import com.example.du_an_md6.service.ICartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,9 @@ public class CartController {
     private ICartService iCartService;
 
     @GetMapping("/account/{id}")
-    public ResponseEntity<List<CartDetail>> getAllCart(@PathVariable("id") Long id_account){
+    public ResponseEntity<List<CartDetailDTO>> getAllCart(@PathVariable("id") Long id_account){
         Cart cart = iCartService.findCartByAccount(id_account);
-        List<CartDetail> cartDetails = iCartDetailService.getAllCartDetailByCart(cart.getId_cart());
+        List<CartDetailDTO> cartDetails = iCartDetailService.getAllCartDetailByCart(cart.getId_cart());
         return ResponseEntity.ok(cartDetails);
     }
 }
