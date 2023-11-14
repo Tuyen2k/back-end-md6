@@ -64,23 +64,22 @@ public class AccountController {
 //                userInfo.getName(), userInfo.getName(), userDetails.getAuthorities(), userInfo.getAddress_delivery()));
 //    }
 //
-//    @RequestMapping(value = "/register", method = RequestMethod.POST)
-//    public ResponseEntity<String> register(@RequestBody Account user) {
-//        if (user.getPassword().equals(user.getConfirm_password())){
-//            user.setPassword(passwordEncoder.encode(user.getPassword()));
-//            user.setConfirm_password(passwordEncoder.encode(user.getConfirm_password()));
-//            Role role_user = roleService.findById(2L);
-//            user.setRole(role_user);
-//            addressService.save(user.getAddress_delivery());
-//            user.setAddress_delivery(addressService.findLast());
-//            userService.save(user);
-//            return new ResponseEntity<>("Register successfully!", HttpStatus.OK);
-//        }
-//       else{
-//            return new ResponseEntity<>("Password confirmation is incorrect!", HttpStatus.OK);
-//        }
-//    }
-
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ResponseEntity<String> register(@RequestBody Account user) {
+        if (user.getPassword().equals(user.getConfirmPassword())){
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
+            Role role_user = roleService.findById(2L);
+            user.setRole(role_user);
+            addressService.save(user.getAddressDelivery());
+            user.setAddressDelivery(addressService.findLast());
+            accountService.save(user);
+            return new ResponseEntity<>("Register successfully!", HttpStatus.OK);
+        }
+       else{
+            return new ResponseEntity<>("Password confirmation is incorrect!", HttpStatus.OK);
+        }
+    }
 
 
     @RequestMapping(value = "/roles", method = RequestMethod.GET)

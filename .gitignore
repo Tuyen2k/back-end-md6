@@ -18,6 +18,7 @@ bin/
 !**/src/test/**/bin/
 database_varinable.env
 ### IntelliJ IDEA ###
+hoan.env
 .idea
 *.iws
 *.iml
