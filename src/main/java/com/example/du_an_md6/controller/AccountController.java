@@ -35,6 +35,8 @@ public class AccountController {
 
     @Autowired
     private AccountService accountServiceLogin;
+    @Autowired
+    private AddressService addressService;
 
     @Autowired
     private IAccountService accountService;
