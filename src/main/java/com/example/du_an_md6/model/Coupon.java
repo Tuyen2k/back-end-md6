@@ -13,10 +13,11 @@ import javax.validation.constraints.Positive;
 public class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_account;
+    private Long id;
     @NotEmpty
     @Column(unique = true)
     private String name;
+    private String image;
     private Double discountAmount;
     @Min(value = 1)
     @Max(value = 100)
@@ -24,4 +25,7 @@ public class Coupon {
     @Positive
     @Min(value = 1)
     private Long quantity;
+    @ManyToOne
+    @JoinColumn(name = "id_merchant")
+    private Merchant merchant;
 }

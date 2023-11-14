@@ -35,6 +35,15 @@ public class ProductController {
     public ResponseEntity<List<ProductDTO>> findAllProduct() {
         return new ResponseEntity<>(productService.getAll(), HttpStatus.OK);
     }
+    @GetMapping("/purchased")
+    public ResponseEntity<List<ProductDTO>> MostPurchasedProducts() {
+        return new ResponseEntity<>(productService.MostPurchasedProducts(), HttpStatus.OK);
+    }
+
+    @GetMapping("/findOne/{id}")
+    public ResponseEntity<Product> findOne(@PathVariable Long id) {
+        return new ResponseEntity<>(productService.findById(id), HttpStatus.OK);
+    }
 
     @GetMapping("/search")
     public List<Product> searchProductForMerchant(@RequestParam("id_merchant") Long id_merchant,
