@@ -21,6 +21,7 @@ public class Product {
     private double price;
     private double priceSale;
     private String image;
+    private String description;
     @Column(nullable = false)
     @ColumnDefault("false")
     private boolean isDelete;
