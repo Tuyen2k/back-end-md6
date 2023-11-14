@@ -36,5 +36,5 @@ database_varinable
 
 ### VS Code ###
 .vscode/
-environment_variable
+environment_variable.env
 thai.env
