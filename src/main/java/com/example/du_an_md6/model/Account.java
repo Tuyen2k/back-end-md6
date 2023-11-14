@@ -23,6 +23,7 @@ public class Account {
     private String password;
     @NotEmpty
     private String confirmPassword;
+
     @Column(nullable = false)
     @ColumnDefault("false")
     private boolean isDelete;
