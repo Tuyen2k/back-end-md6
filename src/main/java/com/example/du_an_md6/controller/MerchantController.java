@@ -1,5 +1,7 @@
 package com.example.du_an_md6.controller;
 
+import com.example.du_an_md6.jwt.service.JwtResponse;
+import com.example.du_an_md6.jwt.service.JwtService;
 import com.example.du_an_md6.mapper.MerchantMapper;
 import com.example.du_an_md6.model.*;
 import com.example.du_an_md6.model.dto.MerchantDTO;
@@ -11,6 +13,11 @@ import com.example.du_an_md6.service.impl.MerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -20,7 +27,10 @@ import java.util.List;
 @CrossOrigin("*")
 @RequestMapping("/api/merchants")
 public class MerchantController {
-
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private JwtService jwtService;
     @Autowired
     IMerchantService merchantService;
     @Autowired
@@ -84,7 +94,6 @@ public class MerchantController {
         merchantService.save(merchant);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
     @PutMapping("/update")
     public ResponseEntity<Void> updateMerchant(@RequestBody Merchant merchant) {
 
