@@ -54,10 +54,6 @@ public class CouponController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/{id_merchant}")
-    public ResponseEntity<List<Coupon>> findAll(@PathVariable Long id_merchant){
-        return new ResponseEntity<>(couponService.findAllByIdMerchant(id_merchant), HttpStatus.OK);
-    }
 
 
 }
