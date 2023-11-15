@@ -50,6 +50,11 @@ public class MerchantController {
         return new ResponseEntity<>(merchantDTOS, HttpStatus.OK);
     }
 
+    @GetMapping("/merchant")
+    public ResponseEntity<List<MerchantDTO>> findAllCheckDelete() {
+        return new ResponseEntity<>(merchantService.findAllCheckDelete(), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<MerchantDTO> findOne(@PathVariable Long id) {
         Merchant merchant = merchantService.findById(id);
