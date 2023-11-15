@@ -4,7 +4,6 @@ import com.example.du_an_md6.model.Bill;
 import com.example.du_an_md6.model.BillDetail;
 import com.example.du_an_md6.model.CartDetail;
 import com.example.du_an_md6.model.Status;
-import com.example.du_an_md6.repository.IBillDetailRepository;
 import com.example.du_an_md6.service.IBillDetailService;
 import com.example.du_an_md6.service.IBillService;
 import com.example.du_an_md6.service.IStatusService;
