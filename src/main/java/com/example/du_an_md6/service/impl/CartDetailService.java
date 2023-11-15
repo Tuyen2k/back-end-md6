@@ -33,6 +33,11 @@ public class CartDetailService implements ICartDetailService {
     }
 
     @Override
+    public void deleteCartDetail(Long id_cart_detail) {
+        iCartDetailRepository.deleteById(id_cart_detail);
+    }
+
+    @Override
     public List<CartDetailDTO> getAllCartDetailByAccount(Long id_account, Long id_status) {
         return cartDetailMapper.toListDto(iCartDetailRepository.getCartDetailByAccount(id_account, id_status));
     }
