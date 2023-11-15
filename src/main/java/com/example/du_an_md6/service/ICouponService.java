@@ -8,4 +8,5 @@ import java.util.List;
 public interface ICouponService extends IGenerateService<Coupon>{
 
     List<Coupon> findAllByIdMerchant(Long id_merchant);
+    void delete(Long id_coupon);
 }

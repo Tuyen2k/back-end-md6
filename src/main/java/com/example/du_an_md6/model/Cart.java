@@ -23,8 +23,9 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(Account account, Merchant merchant) {
+    public Cart(Account account, Merchant merchant, Status status) {
         this.account = account;
         this.merchant = merchant;
+        this.status = status;
     }
 }
