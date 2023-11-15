@@ -1,12 +1,15 @@
 package com.example.du_an_md6.service.impl;
 
+import com.example.du_an_md6.mapper.MerchantMapper;
 import com.example.du_an_md6.model.Merchant;
 import com.example.du_an_md6.model.Product;
+import com.example.du_an_md6.model.dto.MerchantDTO;
 import com.example.du_an_md6.repository.IMerchantRepository;
 import com.example.du_an_md6.service.IMerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,10 +17,24 @@ import java.util.List;
 public class MerchantService implements IMerchantService {
     @Autowired
     IMerchantRepository merchantRepository;
+    @Autowired
+    MerchantMapper merchantMapper;
 
     @Override
     public List<Merchant> findAll() {
         return merchantRepository.findAll();
+    }
+
+    @Override
+    public List<MerchantDTO> findAllCheckDelete(){
+        List<Merchant> merchants = merchantRepository.findAll();
+        List<Merchant> merchantList = new ArrayList<>();
+        for (Merchant m: merchants) {
+            if (!m.isDelete() && m.getActivity().getId_activity() == 3){
+                merchantList.add(m);
+            }
+        }
+        return merchantMapper.toListDto(merchantList);
     }
 
     @Override
