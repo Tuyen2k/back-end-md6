@@ -33,7 +33,7 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public Cart findCartByAccountAndMerchant(Long id_account, Long id_merchant) {
-        return iCartRepository.findByAccountAndMerchant(id_account, id_merchant).orElse(null);
+    public Cart findCartByAccountAndMerchantAndStatus(Long id_account, Long id_merchant, Long id_status) {
+        return iCartRepository.findByAccountAndMerchant(id_account, id_merchant, id_status).orElse(null);
     }
 }

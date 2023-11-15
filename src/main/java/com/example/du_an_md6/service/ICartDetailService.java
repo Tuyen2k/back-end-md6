@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ICartDetailService extends IGenerateService<CartDetail>{
 
-    List<CartDetailDTO> getAllCartDetailByCart(Long id_cart);
+    List<CartDetailDTO> getAllCartDetailByAccount(Long id_account, Long id_status);
+    CartDetail getCartDetailByCartAndProduct(Long id_cart, Long id_product);
 
 }

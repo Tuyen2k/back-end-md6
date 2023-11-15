@@ -16,4 +16,7 @@ public class Bill {
     @ManyToOne
     @JoinColumn(name = "id_merchant")
     private Merchant merchant;
+    @ManyToOne
+    @JoinColumn(name = "id_status")
+    private Status status;
 }

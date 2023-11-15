@@ -33,7 +33,12 @@ public class CartDetailService implements ICartDetailService {
     }
 
     @Override
-    public List<CartDetailDTO> getAllCartDetailByCart(Long id_cart) {
-        return cartDetailMapper.toListDto(iCartDetailRepository.getCartDetailByCart(id_cart));
+    public List<CartDetailDTO> getAllCartDetailByAccount(Long id_account, Long id_status) {
+        return cartDetailMapper.toListDto(iCartDetailRepository.getCartDetailByAccount(id_account, id_status));
+    }
+
+    @Override
+    public CartDetail getCartDetailByCartAndProduct(Long id_cart, Long id_product) {
+        return iCartDetailRepository.getCartDetailByCartAndProduct(id_cart, id_product);
     }
 }

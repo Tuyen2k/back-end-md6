@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,6 +53,19 @@ public class ProductService implements IProductService {
     @Override
     public List<Product> findProductMerchant(Long id_merchant) {
         return productRepository.findProductMerchant(id_merchant) ;
+    }
+
+    public List<ProductDTO> MostPurchasedProducts() {
+        List<ProductDTO> p = getAll();
+        List<ProductDTO> productDTOList = new ArrayList<>(p);
+        for (int i = 0; i < productDTOList.size(); i++) {
+            for (int j = i + 1; j < productDTOList.size(); j++) {
+                if (productDTOList.get(i).getPurchase() < productDTOList.get(j).getPurchase()) {
+                    Collections.swap(productDTOList, i, j);
+                }
+            }
+        }
+        return productDTOList;
     }
     @Override
     public List<Product> findProductsByCategory(Long id_category){

@@ -11,6 +11,11 @@ import java.util.List;
 @Repository
 public interface ICartDetailRepository extends JpaRepository<CartDetail, Long> {
 
-    @Query(value = "select * from cart_detail where id_cart = :id_cart", nativeQuery = true)
-    List<CartDetail> getCartDetailByCart(@Param("id_cart") Long id_cart);
+    @Query(value = "select cd.* from cart_detail as cd " +
+            "join cart as c on cd.id_cart = c.id_cart " +
+            "where c.id_account = ? and c.id_status = ? order by cd.id_cart", nativeQuery = true)
+    List<CartDetail> getCartDetailByAccount(Long id_cart, Long id_status);
+
+    @Query(value = "select * from cart_detail where id_cart = ? and id_product = ?", nativeQuery = true)
+    CartDetail getCartDetailByCartAndProduct( Long id_cart, Long id_product);
 }
