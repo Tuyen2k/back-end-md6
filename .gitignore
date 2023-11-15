@@ -18,7 +18,6 @@ bin/
 !**/src/test/**/bin/
 database_varinable.env
 ### IntelliJ IDEA ###
-hoan.env
 .idea
 *.iws
 *.iml
@@ -26,6 +25,7 @@ hoan.env
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+database_varinable
 
 ### NetBeans ###
 /nbproject/private/

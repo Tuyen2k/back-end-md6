@@ -3,7 +3,6 @@ package com.example.du_an_md6.controller;
 import com.example.du_an_md6.model.Product;
 import com.example.du_an_md6.model.dto.ProductDTO;
 import com.example.du_an_md6.service.IProductService;
-import com.example.du_an_md6.service.impl.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
