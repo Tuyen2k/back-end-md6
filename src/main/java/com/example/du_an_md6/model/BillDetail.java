@@ -20,4 +20,15 @@ public class BillDetail {
     private int quantity;
     private double price;
     private LocalDateTime time_purchase;
+
+    public BillDetail() {
+    }
+
+    public BillDetail(Product product, Bill bill, int quantity, double price, LocalDateTime time_purchase) {
+        this.product = product;
+        this.bill = bill;
+        this.quantity = quantity;
+        this.price = price;
+        this.time_purchase = time_purchase;
+    }
 }

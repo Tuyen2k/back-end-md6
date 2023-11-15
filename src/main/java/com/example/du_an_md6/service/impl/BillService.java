@@ -27,4 +27,9 @@ public class BillService implements IBillService {
     public void save(Bill bill) {
         iBillRepository.save(bill);
     }
+
+    @Override
+    public Bill findByAccountAndMerchant(Long id_account, Long id_merchant) {
+        return iBillRepository.findByAccountAndMerchant(id_account, id_merchant).orElse(null);
+    }
 }
