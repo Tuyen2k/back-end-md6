@@ -34,4 +34,9 @@ public class CouponService implements ICouponService {
     public List<Coupon> findAllByIdMerchant(Long id_merchant) {
         return repository.findCouponByMerchant(merchantService.findById(id_merchant));
     }
+
+    @Override
+    public void delete(Long id_coupon) {
+        repository.deleteById(id_coupon);
+    }
 }
