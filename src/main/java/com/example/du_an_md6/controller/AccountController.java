@@ -1,17 +1,23 @@
 package com.example.du_an_md6.controller;
 
 
+import com.example.du_an_md6.jwt.service.JwtResponse;
 import com.example.du_an_md6.jwt.service.JwtService;
 import com.example.du_an_md6.model.Account;
 import com.example.du_an_md6.model.Role;
 import com.example.du_an_md6.model.dto.AccountDTO;
 import com.example.du_an_md6.service.IAccountService;
 import com.example.du_an_md6.service.IRoleService;
+import com.example.du_an_md6.service.impl.AccountService;
 import com.example.du_an_md6.service.impl.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +33,8 @@ public class AccountController {
     @Autowired
     private JwtService jwtService;
 
+    @Autowired
+    private AccountService accountServiceLogin;
     @Autowired
     private AddressService addressService;
 
@@ -101,11 +109,21 @@ public class AccountController {
 
     @PostMapping("/up_role/{id}")
     public ResponseEntity<Void> upRole(@RequestBody Role role,
-                                       @PathVariable Long id){
+                                       @PathVariable Long id) {
         Account account = accountService.findById(id);
         account.setRole(role);
         accountService.save(account);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity<?> login(@RequestBody Account user) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getName(), user.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtService.generateTokenLogin(authentication);
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Account userInfo = accountServiceLogin.findByUsername(user.getName());
+        return ResponseEntity.ok(new JwtResponse(userInfo.getId_account(), jwt,
+                userInfo.getName(), userInfo.getName(), userDetails.getAuthorities(), userInfo.getAddressDelivery()));
+    }
 }
