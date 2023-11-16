@@ -6,6 +6,7 @@ import com.example.du_an_md6.model.CartDetail;
 import com.example.du_an_md6.model.Status;
 import com.example.du_an_md6.service.IBillDetailService;
 import com.example.du_an_md6.service.IBillService;
+import com.example.du_an_md6.service.ICartDetailService;
 import com.example.du_an_md6.service.IStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,8 @@ public class BillController {
     private IBillDetailService iBillDetailService;
     @Autowired
     private IStatusService iStatusService;
+    @Autowired
+    private ICartDetailService iCartDetailService;
 
 
 
@@ -33,6 +36,8 @@ public class BillController {
         for (CartDetail cartDetail : cartDetailList) {
             Bill bill = iBillService.findByAccountAndMerchant(cartDetail.getCart().getAccount().getId_account(),
                     cartDetail.getCart().getMerchant().getId_merchant());
+//            Bill bill = iBillService.findByAccountAndMerchant(cartDetail.getCart().getAccount().getId_account(),
+//                    cartDetail.getCart().getMerchant().getId_merchant(), LocalDateTime.now());
             if (bill == null) {
                 Status status = iStatusService.findById(1L);
                 iBillService.save(new Bill(cartDetail.getCart().getAccount(),
@@ -43,6 +48,7 @@ public class BillController {
             }
             BillDetail billDetail = new BillDetail(cartDetail.getProduct(),bill,cartDetail.getQuantity(), cartDetail.getPrice(), bill.getTime_purchase());
             iBillDetailService.save(billDetail);
+            iCartDetailService.deleteCartDetail(cartDetail.getId_cartDetail());
         }
         return ResponseEntity.ok("Order success!");
     }
