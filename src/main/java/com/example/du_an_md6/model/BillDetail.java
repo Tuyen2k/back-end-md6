@@ -1,7 +1,5 @@
 package com.example.du_an_md6.model;
-
 import lombok.Data;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
