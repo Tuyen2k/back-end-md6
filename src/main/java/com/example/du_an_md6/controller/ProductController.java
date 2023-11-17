@@ -69,4 +69,13 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("fill_by_price")
+    public ResponseEntity<List<ProductDTO>> searchByCategory(){
+        if (!productService.findAllProductsByPriceSale().isEmpty()){
+            return new ResponseEntity<>(productService.findAllProductsByPriceSale(),HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
