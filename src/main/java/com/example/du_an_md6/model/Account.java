@@ -16,6 +16,11 @@ public class Account {
     @Column(unique = true)
     private String name;
     @NotEmpty
+    private String fullName;
+    @NotEmpty
+    @Column(unique = true)
+    private String email;
+    @NotEmpty
     @Column(unique = true)
     private String phone;
     private String image;
@@ -27,6 +32,9 @@ public class Account {
     @Column(nullable = false)
     @ColumnDefault("false")
     private boolean isDelete;
+    @Column(nullable = false)
+    @ColumnDefault("false")
+    private boolean status;
     @ManyToOne
     @JoinColumn(name = "id_role")
     private Role role;

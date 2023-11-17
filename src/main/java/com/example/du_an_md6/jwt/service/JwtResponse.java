@@ -18,6 +18,9 @@ public class JwtResponse {
     private String name;
     private final Collection<? extends GrantedAuthority> authorities;
     private Address address;
+    private String image;
+    private String email;
+    private String phone;
 
     public JwtResponse(Long id, String token, String username, String name, Collection<? extends GrantedAuthority> authorities, Address address) {
         this.id = id;
@@ -26,5 +29,18 @@ public class JwtResponse {
         this.name = name;
         this.authorities = authorities;
         this.address = address;
+    }
+
+    public JwtResponse(Long id, String token, String username, String name, Collection<? extends GrantedAuthority> authorities, Address address, String image, String email, String phone) {
+        this.id = id;
+        this.token = token;
+        this.type = type;
+        this.username = username;
+        this.name = name;
+        this.authorities = authorities;
+        this.address = address;
+        this.image = image;
+        this.email = email;
+        this.phone = phone;
     }
 }

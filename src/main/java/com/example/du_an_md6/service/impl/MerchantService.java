@@ -2,7 +2,6 @@ package com.example.du_an_md6.service.impl;
 
 import com.example.du_an_md6.mapper.MerchantMapper;
 import com.example.du_an_md6.model.Merchant;
-import com.example.du_an_md6.model.Product;
 import com.example.du_an_md6.model.dto.MerchantDTO;
 import com.example.du_an_md6.repository.IMerchantRepository;
 import com.example.du_an_md6.service.IMerchantService;
@@ -61,5 +60,10 @@ public class MerchantService implements IMerchantService {
             }
         }
         return merchant;
+    }
+
+    @Override
+    public MerchantDTO findByAccount(Long id_account) {
+        return merchantMapper.toDto(merchantRepository.findByAccount(id_account).orElse(null));
     }
 }
