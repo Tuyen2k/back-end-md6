@@ -124,6 +124,8 @@ public class AccountController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Account userInfo = accountServiceLogin.findByUsername(user.getName());
         return ResponseEntity.ok(new JwtResponse(userInfo.getId_account(), jwt,
-                userInfo.getName(), userInfo.getName(), userDetails.getAuthorities(), userInfo.getAddressDelivery()));
+                userInfo.getName(), userInfo.getFullName(),
+                userDetails.getAuthorities(), userInfo.getAddressDelivery(),
+                userInfo.getImage(), userInfo.getEmail(), userInfo.getPhone()));
     }
 }
