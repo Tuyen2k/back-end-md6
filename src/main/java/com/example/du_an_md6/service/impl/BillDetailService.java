@@ -1,5 +1,6 @@
 package com.example.du_an_md6.service.impl;
 
+import com.example.du_an_md6.model.Bill;
 import com.example.du_an_md6.model.BillDetail;
 import com.example.du_an_md6.repository.IBillDetailRepository;
 import com.example.du_an_md6.service.IBillDetailService;
@@ -26,5 +27,9 @@ public class BillDetailService implements IBillDetailService {
     @Override
     public void save(BillDetail billDetail) {
         iBillDetailRepository.save(billDetail);
+    }
+    @Override
+    public List<BillDetail> findAllOrders(Long id_merchant) {
+        return iBillDetailRepository.findAllOrders(id_merchant);
     }
 }

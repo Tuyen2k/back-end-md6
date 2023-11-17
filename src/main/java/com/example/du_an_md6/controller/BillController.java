@@ -1,5 +1,4 @@
 package com.example.du_an_md6.controller;
-
 import com.example.du_an_md6.model.Bill;
 import com.example.du_an_md6.model.BillDetail;
 import com.example.du_an_md6.model.CartDetail;
@@ -29,8 +28,6 @@ public class BillController {
     @Autowired
     private ICartDetailService iCartDetailService;
 
-
-
     @PostMapping("/order")
     public ResponseEntity<String> order(@RequestBody List<CartDetail> cartDetailList) {
         for (CartDetail cartDetail : cartDetailList) {
@@ -52,6 +49,7 @@ public class BillController {
         }
         return ResponseEntity.ok("Order success!");
     }
+
 
 
 }
