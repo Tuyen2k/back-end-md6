@@ -41,6 +41,8 @@ public class Account {
     @ManyToOne
     @JoinColumn(name = "id_address")
     private Address addressDelivery;
-    private  String email ;
-    private Boolean status;
+
+    public boolean isStatus() {
+        return status;
+    }
 }

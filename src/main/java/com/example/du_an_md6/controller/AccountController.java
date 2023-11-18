@@ -131,7 +131,7 @@ public class AccountController {
         String jwt = jwtService.generateTokenLogin(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Account userInfo = accountServiceLogin.findByUsername(user.getName());
-        if (userInfo.getStatus()){
+        if (userInfo.isStatus()){
             return ResponseEntity.ok(new JwtResponse(userInfo.getId_account(), jwt,
                     userInfo.getName(), userInfo.getName(), userDetails.getAuthorities(), userInfo.getAddressDelivery()));
         }else {
@@ -141,7 +141,7 @@ public class AccountController {
     @PostMapping("/forget-password")
     public ResponseEntity<Void> forgetPassword(@RequestParam("email") String email) {
         Account account = mailService.findAccountByEmail(email);
-        if (account.getStatus()) {
+        if (account.isStatus()) {
             String to = account.getEmail();
             String subject = "Reset password from Yumi";
             String code = mailService.generateRandomCode();
@@ -160,9 +160,6 @@ public class AccountController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        return ResponseEntity.ok(new JwtResponse(userInfo.getId_account(), jwt,
-                userInfo.getName(), userInfo.getFullName(),
-                userDetails.getAuthorities(), userInfo.getAddressDelivery(),
-                userInfo.getImage(), userInfo.getEmail(), userInfo.getPhone()));
+
     }
 }
