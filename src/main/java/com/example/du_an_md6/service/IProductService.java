@@ -15,4 +15,5 @@ public interface IProductService extends IGenerateService<Product> {
     List<ProductDTO> getAll();
     List<Product> findProductsByCategory(Long id_category);
     List<ProductDTO> MostPurchasedProducts();
+    List<ProductDTO> findAllProductsByPriceSale();
 }

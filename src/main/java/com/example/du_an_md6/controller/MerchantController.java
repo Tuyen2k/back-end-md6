@@ -113,4 +113,9 @@ public class MerchantController {
         merchantService.save(merchant);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/find-merchant/{id}")
+    public ResponseEntity<MerchantDTO> findMerchantByAccount(@PathVariable("id") Long id_account){
+        return ResponseEntity.ok(merchantService.findByAccount(id_account));
+    }
 }

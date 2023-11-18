@@ -67,6 +67,40 @@ public class ProductService implements IProductService {
         }
         return productDTOList;
     }
+
+    public List<ProductDTO> findAllProductsByPriceSale() {
+        List<ProductDTO> p = getAll();
+
+        List<ProductDTO> top10Products = p.stream()
+                .sorted(Comparator.comparing(ProductDTO::getPrice).reversed())
+                .limit(10)
+                .collect(Collectors.toList());
+
+         return top10Products;
+    }
+
+
+//        public List<ProductDTO> findAllProductsByPriceSale() {
+//        List<ProductDTO> p = getAll();
+//        List<Double> count = new ArrayList<>();
+//        List<ProductDTO> productDTOList = new ArrayList<>();
+//        for (ProductDTO productDTO : p) {
+//            Double total = productDTO.getPrice() - productDTO.getPriceSale();
+//            count.add(total);
+//        }
+//        List<Double> sortedList = count.stream()
+//                .sorted(Collections.reverseOrder())
+//                .collect(Collectors.toList());
+//        List<Double> top10Values = sortedList.subList(0, Math.min(10, sortedList.size()));
+//        for (ProductDTO productDTO : p) {
+//            for (Double check : top10Values) {
+//                if (productDTO.getPrice() - productDTO.getPriceSale() == check) {
+//                    productDTOList.add(productDTO);
+//                }
+//            }
+//        }
+//        return productDTOList;
+//    }
     @Override
     public List<Product> findProductsByCategory(Long id_category){
         return productRepository.findProductByCategory(id_category);
