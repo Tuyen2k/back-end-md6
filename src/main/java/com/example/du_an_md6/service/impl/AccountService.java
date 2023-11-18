@@ -7,6 +7,8 @@ import com.example.du_an_md6.model.dto.AccountDTO;
 import com.example.du_an_md6.repository.IAccountRepository;
 import com.example.du_an_md6.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,6 +23,9 @@ public class AccountService implements UserDetailsService, IAccountService {
 
     @Autowired
     private AccountMapper accountMapper;
+    @Autowired
+    private JavaMailSender javaMailSender;
+
     @Override
     public List<Account> findAll() {
         return iAccountRepository.findAll();
@@ -62,4 +67,16 @@ public class AccountService implements UserDetailsService, IAccountService {
         List<Account> list = iAccountRepository.findAll();
         return accountMapper.toListDto(list);
     }
+    public Boolean changePassword(Account account){
+        Account account1 = iAccountRepository.findById(account.getId_account()).orElse(null);
+        if (account1!=null && account1.getPassword().equals(account1.getConfirmPassword())){
+            account.setPassword(account.getPassword());
+            iAccountRepository.save(account);
+            return true;
+        }
+        return false;
+    }
+
+
+
 }

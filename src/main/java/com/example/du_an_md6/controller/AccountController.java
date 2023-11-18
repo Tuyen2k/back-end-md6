@@ -4,12 +4,14 @@ package com.example.du_an_md6.controller;
 import com.example.du_an_md6.jwt.service.JwtResponse;
 import com.example.du_an_md6.jwt.service.JwtService;
 import com.example.du_an_md6.model.Account;
+import com.example.du_an_md6.model.MailStructure;
 import com.example.du_an_md6.model.Role;
 import com.example.du_an_md6.model.dto.AccountDTO;
 import com.example.du_an_md6.service.IAccountService;
 import com.example.du_an_md6.service.IRoleService;
 import com.example.du_an_md6.service.impl.AccountService;
 import com.example.du_an_md6.service.impl.AddressService;
+import com.example.du_an_md6.service.impl.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 
@@ -46,6 +49,9 @@ public class AccountController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private MailService mailService;
 
     @GetMapping
     public ResponseEntity<List<AccountDTO>> findAll() {
@@ -81,8 +87,10 @@ public class AccountController {
             user.setRole(role_user);
             addressService.save(user.getAddressDelivery());
             user.setAddressDelivery(addressService.findLast());
-            accountService.save(user);
-            return new ResponseEntity<>("Register successfully!", HttpStatus.OK);
+            if (mailService.register(user)){
+                return new ResponseEntity<>("Register successfully!", HttpStatus.OK);
+            }
+            return new  ResponseEntity("Email is exist!", HttpStatus.BAD_REQUEST);
         }
        else{
             return new ResponseEntity<>("Password confirmation is incorrect!", HttpStatus.OK);
@@ -123,6 +131,35 @@ public class AccountController {
         String jwt = jwtService.generateTokenLogin(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Account userInfo = accountServiceLogin.findByUsername(user.getName());
+        if (userInfo.getStatus()){
+            return ResponseEntity.ok(new JwtResponse(userInfo.getId_account(), jwt,
+                    userInfo.getName(), userInfo.getName(), userDetails.getAuthorities(), userInfo.getAddressDelivery()));
+        }else {
+            return new ResponseEntity<>("false", HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PostMapping("/forget-password")
+    public ResponseEntity<Void> forgetPassword(@RequestParam("email") String email) {
+        Account account = mailService.findAccountByEmail(email);
+        if (account.getStatus()) {
+            String to = account.getEmail();
+            String subject = "Reset password from Yumi";
+            String code = mailService.generateRandomCode();
+            String text = "Hello, " + account.getName() + "\n Your password has been reset to " + code + ", please change it. Thank you";
+            account.setPassword(code);
+            accountService.save(account);
+            MailStructure mailStructure = new MailStructure(to,subject,text);
+            mailService.sendMail(mailStructure);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    @PostMapping("/change-password")
+    public ResponseEntity<Void> changePassword(@RequestBody Account account) {
+        if (accountServiceLogin.changePassword(account)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return ResponseEntity.ok(new JwtResponse(userInfo.getId_account(), jwt,
                 userInfo.getName(), userInfo.getFullName(),
                 userDetails.getAuthorities(), userInfo.getAddressDelivery(),
