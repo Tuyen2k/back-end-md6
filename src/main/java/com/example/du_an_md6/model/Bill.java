@@ -20,15 +20,17 @@ public class Bill {
     @ManyToOne
     @JoinColumn(name = "id_status")
     private Status status;
+    private String codePurchase;
     private LocalDateTime time_purchase;
 
     public Bill() {
     }
 
-    public Bill(Account account, Merchant merchant, Status status, LocalDateTime time) {
+    public Bill(Account account, Merchant merchant, Status status, String codePurchase, LocalDateTime time) {
         this.account = account;
         this.merchant = merchant;
         this.status = status;
+        this.codePurchase = codePurchase;
         this.time_purchase = time;
     }
 }

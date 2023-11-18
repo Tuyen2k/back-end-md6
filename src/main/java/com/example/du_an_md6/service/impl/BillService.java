@@ -34,7 +34,7 @@ public class BillService implements IBillService {
         return iBillRepository.findByAccountAndMerchant(id_account, id_merchant).orElse(null);
     }
     @Override
-    public Bill findByAccountAndMerchant(Long id_account, Long id_merchant, LocalDateTime time) {
-        return iBillRepository.findByAccountAndMerchant(id_account, id_merchant, time).orElse(null);
+    public Bill findByAccountAndMerchantAndCode(Long id_account, Long id_merchant, String codePurchase) {
+        return iBillRepository.findByAccountAndMerchantAndCode(id_account, id_merchant, codePurchase).orElse(null);
     }
 }

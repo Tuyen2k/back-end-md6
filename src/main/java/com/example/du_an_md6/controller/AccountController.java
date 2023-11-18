@@ -90,7 +90,7 @@ public class AccountController {
             if (mailService.register(user)){
                 return new ResponseEntity<>("Register successfully!", HttpStatus.OK);
             }
-            return new  ResponseEntity("Email is exist!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Email is exist!", HttpStatus.BAD_REQUEST);
         }
        else{
             return new ResponseEntity<>("Password confirmation is incorrect!", HttpStatus.OK);

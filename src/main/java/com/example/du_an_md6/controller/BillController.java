@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 
 @RestController
 @CrossOrigin("*")
@@ -26,23 +27,26 @@ public class BillController {
     private IAccountService iAccountService;
 
 
+    private String getCodePurchase() {
+        Random random = new Random();
+        return String.valueOf(random.nextInt(999999) + 100000);
+    }
 
     @PostMapping("/order")
     public ResponseEntity<String> order(@RequestBody List<CartDetail> cartDetailList) {
+        String codePurchase = getCodePurchase();
         for (CartDetail cartDetail : cartDetailList) {
-            Bill bill = iBillService.findByAccountAndMerchant(cartDetail.getCart().getAccount().getId_account(),
-                    cartDetail.getCart().getMerchant().getId_merchant());
-//            Bill bill = iBillService.findByAccountAndMerchant(cartDetail.getCart().getAccount().getId_account(),
-//                    cartDetail.getCart().getMerchant().getId_merchant(), LocalDateTime.now());
+            Bill bill = iBillService.findByAccountAndMerchantAndCode(cartDetail.getCart().getAccount().getId_account(),
+                    cartDetail.getCart().getMerchant().getId_merchant(), codePurchase);
             if (bill == null) {
                 Status status = iStatusService.findById(1L);
                 iBillService.save(new Bill(cartDetail.getCart().getAccount(),
-                        cartDetail.getCart().getMerchant(), status, LocalDateTime.now()));
-                bill = iBillService.findByAccountAndMerchant(cartDetail.getCart().getAccount().getId_account(),
-                        cartDetail.getCart().getMerchant().getId_merchant());
+                        cartDetail.getCart().getMerchant(), status, codePurchase, LocalDateTime.now()));
+                bill = iBillService.findByAccountAndMerchantAndCode(cartDetail.getCart().getAccount().getId_account(),
+                        cartDetail.getCart().getMerchant().getId_merchant(), codePurchase);
 
             }
-            BillDetail billDetail = new BillDetail(cartDetail.getProduct(),bill,cartDetail.getQuantity(), cartDetail.getPrice(), bill.getTime_purchase());
+            BillDetail billDetail = new BillDetail(cartDetail.getProduct(), bill, cartDetail.getQuantity(), cartDetail.getPrice(), bill.getTime_purchase());
             iBillDetailService.save(billDetail);
             iCartDetailService.deleteCartDetail(cartDetail.getId_cartDetail());
         }
@@ -50,14 +54,15 @@ public class BillController {
     }
 
     @PostMapping("/order-now/{id}")
-    public ResponseEntity<String> orderNow(@PathVariable("id") Long id_account,@RequestBody Product product){
+    public ResponseEntity<String> orderNow(@PathVariable("id") Long id_account, @RequestBody Product product) {
+        String codePurchase = getCodePurchase();
         Account account = iAccountService.findById(id_account);
-        if (account != null){
+        if (account != null) {
             Status status = iStatusService.findById(1L);
             iBillService.save(new Bill(account,
-                    product.getMerchant(), status, LocalDateTime.now()));
-            Bill bill = iBillService.findByAccountAndMerchant(account.getId_account(), product.getMerchant().getId_merchant());
-            BillDetail billDetail = new BillDetail(product,bill,1, product.getPrice(), bill.getTime_purchase());
+                    product.getMerchant(), status, codePurchase, LocalDateTime.now()));
+            Bill bill = iBillService.findByAccountAndMerchantAndCode(account.getId_account(), product.getMerchant().getId_merchant(), codePurchase);
+            BillDetail billDetail = new BillDetail(product, bill, 1, product.getPrice(), bill.getTime_purchase());
             iBillDetailService.save(billDetail);
             return ResponseEntity.ok("Order success!");
         }

@@ -13,6 +13,6 @@ public interface IBillRepository extends JpaRepository<Bill, Long> {
 
     @Query(value = "select * from bill where id_account = ? and id_merchant = ? and id_status = 1",nativeQuery = true)
     Optional<Bill> findByAccountAndMerchant(Long id_account, Long id_merchant);
-    @Query(value = "select * from bill where id_account = ? and id_merchant = ? and id_status = 1 and time_purchase = ?",nativeQuery = true)
-    Optional<Bill> findByAccountAndMerchant(Long id_account, Long id_merchant, LocalDateTime time);
+    @Query(value = "select * from bill where id_account = ? and id_merchant = ? and id_status = 1 and code_purchase = ?",nativeQuery = true)
+    Optional<Bill> findByAccountAndMerchantAndCode(Long id_account, Long id_merchant, String code);
 }

@@ -7,5 +7,5 @@ import java.time.LocalDateTime;
 
 public interface IBillService extends IGenerateService<Bill> {
     Bill findByAccountAndMerchant(Long id_account, Long id_merchant);
-    Bill findByAccountAndMerchant(Long id_account, Long id_merchant, LocalDateTime time);
+    Bill findByAccountAndMerchantAndCode(Long id_account, Long id_merchant, String codePurchase);
 }
