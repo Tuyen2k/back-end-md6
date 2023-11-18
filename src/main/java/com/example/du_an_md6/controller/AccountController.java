@@ -143,7 +143,7 @@ public class AccountController {
         Account account = mailService.findAccountByEmail(email);
         if (account.isStatus()) {
             String to = account.getEmail();
-            String subject = "Reset password from Yumi";
+            String subject = "Reset password from Yummy";
             String code = mailService.generateRandomCode();
             String text = "Hello, " + account.getName() + "\n Your password has been reset to " + code + ", please change it. Thank you";
             account.setPassword(code);
