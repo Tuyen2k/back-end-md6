@@ -9,6 +9,7 @@ import javax.persistence.Id;
 
 @Entity
 @Data
+
 public class MailStructure {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,4 +17,14 @@ public class MailStructure {
     private String subject;
     private String message;
     private String receiver;
+
+    public MailStructure(String subject, String text, String email) {
+        this.subject =subject;
+        this.message = text;
+        this.receiver =email;
+    }
+
+    public MailStructure() {
+
+    }
 }
