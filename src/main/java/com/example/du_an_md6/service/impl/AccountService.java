@@ -67,6 +67,18 @@ public class AccountService implements UserDetailsService, IAccountService {
         List<Account> list = iAccountRepository.findAll();
         return accountMapper.toListDto(list);
     }
+
+
+    @Override
+    public Account findByPhone(String phone) {
+        return iAccountRepository.findByPhone(phone);
+    }
+
+    @Override
+    public Account findByEmail(String email) {
+        return iAccountRepository.findByEmail(email);
+    }
+
     public Boolean changePassword(Account account){
         Account account1 = iAccountRepository.findById(account.getId_account()).orElse(null);
         if (account1!=null && account1.getPassword().equals(account1.getConfirmPassword())){
