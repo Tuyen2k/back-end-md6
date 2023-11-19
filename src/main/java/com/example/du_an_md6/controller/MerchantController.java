@@ -7,6 +7,7 @@ import com.example.du_an_md6.model.*;
 import com.example.du_an_md6.model.dto.MerchantDTO;
 import com.example.du_an_md6.repository.IActivityRepository;
 import com.example.du_an_md6.service.IMerchantService;
+import com.example.du_an_md6.service.IRoleService;
 import com.example.du_an_md6.service.impl.AccountService;
 import com.example.du_an_md6.service.impl.AddressServiceImpl;
 import com.example.du_an_md6.service.impl.MerchantService;
@@ -39,6 +40,8 @@ public class MerchantController {
     AddressServiceImpl addressService;
     @Autowired
     AccountService accountService;
+    @Autowired
+    private IRoleService iRoleService;
     @Autowired
     MerchantService merchant;
     @Autowired
@@ -96,6 +99,11 @@ public class MerchantController {
                 merchant.getAddressShop().getWard().getId_ward(),
                 merchant.getAddressShop().getAddress_detail());
         merchant.setAddressShop(address);
+        Role role = iRoleService.findById(3L);
+        merchant.getAccount().setRole(role);
+        Account account = accountService.findById(merchant.getAccount().getId_account());
+        account.setRole(role);
+        accountService.save(account);
         merchantService.save(merchant);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
