@@ -1,6 +1,8 @@
 package com.example.du_an_md6.service.impl;
 
+import com.example.du_an_md6.mapper.BillDetailMapper;
 import com.example.du_an_md6.model.BillDetail;
+import com.example.du_an_md6.model.dto.BillDetailDTO;
 import com.example.du_an_md6.repository.IBillDetailRepository;
 import com.example.du_an_md6.service.IBillDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import java.util.List;
 public class BillDetailService implements IBillDetailService {
     @Autowired
     private IBillDetailRepository iBillDetailRepository;
+    @Autowired
+    private BillDetailMapper billDetailMapper;
 
     @Override
     public List<BillDetail> findAll() {
@@ -26,5 +30,10 @@ public class BillDetailService implements IBillDetailService {
     @Override
     public void save(BillDetail billDetail) {
         iBillDetailRepository.save(billDetail);
+    }
+
+    @Override
+    public List<BillDetailDTO> getAddBillDetailByAccount(Long id_account) {
+        return billDetailMapper.toListDto(iBillDetailRepository.getAddBillDetailByAccount(id_account));
     }
 }
