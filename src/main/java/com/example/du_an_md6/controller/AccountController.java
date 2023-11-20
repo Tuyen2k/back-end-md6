@@ -22,7 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
+
 
 import java.util.List;
 
@@ -57,27 +57,6 @@ public class AccountController {
     public ResponseEntity<List<AccountDTO>> findAll() {
         return new ResponseEntity<>(accountService.findAllDTO(), HttpStatus.OK);
     }
-//    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-//    public ResponseEntity<Object> findById(@PathVariable Long id) {
-//        UserDTO user = userService.findOne(id);
-//        if (user != null) {
-//            return new ResponseEntity<>(user, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>("Not Found User", HttpStatus.NO_CONTENT);
-//    }
-//
-//    @RequestMapping(value = "/login", method = RequestMethod.POST)
-//    public ResponseEntity<?> login(@RequestBody Account user) {
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(user.getName(), user.getPassword()));
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        String jwt = jwtService.generateTokenLogin(authentication);
-//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-//        Account userInfo = userService.findByUsername(user.getName());
-//        return ResponseEntity.ok(new JwtResponse(userInfo.getId_account(), jwt,
-//                userInfo.getName(), userInfo.getName(), userDetails.getAuthorities(), userInfo.getAddress_delivery()));
-//    }
-//
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<String> register(@RequestBody Account user) {
         if (user.getPassword().equals(user.getConfirmPassword())){

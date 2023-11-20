@@ -10,7 +10,10 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class MailService {
@@ -22,6 +25,7 @@ public class MailService {
 
     @Autowired
     private IAccountRepository accountRepository;
+
     @Value("${spring.mail.username}")
     private String fromMail;
     public void sendMail(MailStructure mailStructure){
@@ -51,11 +55,22 @@ public class MailService {
     }
     public Boolean register(Account account) {
         String email = account.getEmail();
+        String name = account.getName();
+        String phone = account.getPhone();
+        if(isDuplicateEmail(email)){
+            return false;
+        }
+        if(isDuplicateName(name)){
+            return false;
+        }
+        if(isDuplicatePhone(phone)){
+            return false;
+        }
         String link = "http://localhost:8080/api/mail/active/" + email;
         String subject = "Active account from Yummy";
-        String text = "Hello, " + account.getName()
+        String text = "Hello, " + name
                 + "\n Please confirm this link to active your account: "+link;
-        if (findAccountByEmail(email) == null ) {
+        if (findAccountByEmail(email) == null ){
             account.setStatus(false);
             accountRepository.save(account);
             MailStructure mailStructure =new MailStructure(subject,text,email);
@@ -76,5 +91,20 @@ public class MailService {
 
         return sb.toString();
     }
+    public boolean isDuplicateName(String name) {
+        Account existingAccount = accountRepository.findByName(name);
+        return existingAccount != null;
+    }
+
+    public boolean isDuplicatePhone(String phone) {
+        Account existingAccount = accountRepository.findByPhone(phone);
+        return existingAccount != null;
+    }
+
+    public boolean isDuplicateEmail(String email) {
+        Account existingAccount = accountRepository.findByEmail(email);
+        return existingAccount != null;
+    }
+
 }
 
