@@ -51,6 +51,21 @@ public class BillDetailService implements IBillDetailService {
     }
 
     @Override
+    public List<BillDetail> statisticsByProduct(Long id_product) {
+        return iBillDetailRepository.statisticsByProduct(id_product);
+    }
+
+    @Override
+    public List<BillDetail> statisticsByStatus(Long id_merchant, Long id_status) {
+        return iBillDetailRepository.statisticsByStatus(id_merchant,id_status);
+    }
+
+    @Override
+    public List<BillDetail> statisticsByUser(Long id_merchant, Long id_user) {
+        return iBillDetailRepository.statisticsByUser(id_merchant,id_user);
+    }
+
+    @Override
     public List<BillDetail> findAllOrders(Long id_merchant) {
         return iBillDetailRepository.findAllOrders(id_merchant);
     }

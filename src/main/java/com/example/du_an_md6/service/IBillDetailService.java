@@ -14,4 +14,8 @@ public interface IBillDetailService extends IGenerateService<BillDetail> {
     List<BillDetail> findAllOrders(Long id_merchant);
     List<BillDetail> findByBill_Account_NameContainingAndBill_Merchant(String name, Merchant Merchant);
     List<BillDetail> findByBill_Account_PhoneContainingAndBill_Merchant(String name, Merchant Merchant);
+
+    List<BillDetail> statisticsByProduct(Long id_product);
+    List<BillDetail> statisticsByStatus(Long id_merchant, Long id_status);
+    List<BillDetail> statisticsByUser(Long id_merchant, Long id_user);
 }

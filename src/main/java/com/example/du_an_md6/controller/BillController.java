@@ -80,9 +80,14 @@ public class BillController {
         }
     }
 
-
-
-
+    @GetMapping("/user/{id_merchant}")
+    public ResponseEntity<List<Bill>> getUserByMerchant(@PathVariable Long id_merchant){
+        if (!iBillService.getAllBillyMerchant(id_merchant).isEmpty()){
+            return new ResponseEntity<>(iBillService.getAllBillyMerchant(id_merchant), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 }
