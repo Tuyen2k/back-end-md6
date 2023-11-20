@@ -103,4 +103,17 @@ public class BillController {
             return ResponseEntity.ok("Cancel success!");
         }
     }
+
+    @PostMapping("/update-status/{id}")
+    public ResponseEntity<String> updateStatusBill(@PathVariable("id") Long id_bill,
+                                                   @RequestBody Status status){
+        Bill bill = iBillService.findById(id_bill);
+        if (bill == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            bill.setStatus(status);
+            iBillService.save(bill);
+            return ResponseEntity.ok("Update status success!");
+        }
+    }
 }
