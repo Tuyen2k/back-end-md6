@@ -37,4 +37,5 @@ public class BillService implements IBillService {
     public Bill findByAccountAndMerchantAndCode(Long id_account, Long id_merchant, String codePurchase) {
         return iBillRepository.findByAccountAndMerchantAndCode(id_account, id_merchant, codePurchase).orElse(null);
     }
+
 }
