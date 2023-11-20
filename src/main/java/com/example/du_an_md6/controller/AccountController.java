@@ -158,4 +158,14 @@ public class AccountController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
     }
+
+    @GetMapping("/account-by-merchant/{id}")
+    public ResponseEntity<AccountDTO> findAccountByMerchant(@PathVariable("id") Long id_merchant){
+        return ResponseEntity.ok(accountService.findAccountByMerchant(id_merchant));
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<Account> findByID(@PathVariable("id") Long id_account){
+        return ResponseEntity.ok(accountService.findById(id_account));
+    }
+
 }
