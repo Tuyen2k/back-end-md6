@@ -70,15 +70,13 @@ public class MailService {
         String subject = "Active account from Yummy";
         String text = "Hello, " + name
                 + "\n Please confirm this link to active your account: "+link;
-        if (findAccountByEmail(email) == null ){
             account.setStatus(false);
             accountRepository.save(account);
             MailStructure mailStructure =new MailStructure(subject,text,email);
             sendMail(mailStructure);
             return true;
         }
-        return false;
-    }
+
     public String generateRandomCode() {
         int length = 8;
         String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
