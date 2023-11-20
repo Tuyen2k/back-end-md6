@@ -81,8 +81,16 @@ public class BillController {
         }
     }
 
-
-
-
-
+    @GetMapping("/cancel/bill/{id}")
+    public ResponseEntity<String> cancelBill(@PathVariable("id") Long id_bill){
+        Bill bill = iBillService.findById(id_bill);
+        if (bill == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            Status status = iStatusService.findById(6L);
+            bill.setStatus(status);
+            iBillService.save(bill);
+            return ResponseEntity.ok("Cancel success!");
+        }
+    }
 }

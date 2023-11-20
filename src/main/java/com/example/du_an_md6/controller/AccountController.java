@@ -102,6 +102,21 @@ public class AccountController {
         accountService.save(account);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+//    @RequestMapping(value = "/login", method = RequestMethod.POST)
+//    public ResponseEntity<?> login(@RequestBody Account user) {
+//        Authentication authentication = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(user.getName(), user.getPassword()));
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        String jwt = jwtService.generateTokenLogin(authentication);
+//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+//        Account userInfo = accountServiceLogin.findByUsername(user.getName());
+//        if (userInfo.isStatus()){
+//            return ResponseEntity.ok(new JwtResponse(userInfo.getId_account(), jwt,
+//                    userInfo.getName(), userInfo.getName(), userDetails.getAuthorities(), userInfo.getAddressDelivery()));
+//        }else {
+//            return new ResponseEntity<>("false", HttpStatus.BAD_REQUEST);
+//        }
+//    }
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody Account user) {
         Authentication authentication = authenticationManager.authenticate(
@@ -110,10 +125,12 @@ public class AccountController {
         String jwt = jwtService.generateTokenLogin(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Account userInfo = accountServiceLogin.findByUsername(user.getName());
-        if (userInfo.isStatus()){
+        if (userInfo.isStatus()) {
             return ResponseEntity.ok(new JwtResponse(userInfo.getId_account(), jwt,
-                    userInfo.getName(), userInfo.getName(), userDetails.getAuthorities(), userInfo.getAddressDelivery()));
-        }else {
+                    userInfo.getName(), userInfo.getFullName(),
+                    userDetails.getAuthorities(), userInfo.getAddressDelivery(),
+                    userInfo.getImage(), userInfo.getEmail(), userInfo.getPhone()));
+        } else {
             return new ResponseEntity<>("false", HttpStatus.BAD_REQUEST);
         }
     }
