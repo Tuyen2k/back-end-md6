@@ -1,7 +1,6 @@
 package com.example.du_an_md6.controller;
 
 import com.example.du_an_md6.model.*;
-import com.example.du_an_md6.model.dto.BillDTO;
 import com.example.du_an_md6.model.dto.BillDetailDTO;
 import com.example.du_an_md6.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +62,7 @@ public class BillController {
         if (account != null) {
             Status status = iStatusService.findById(1L);
             iBillService.save(new Bill(account,
-                    product.getMerchant(), status, codePurchase, LocalDateTime.now()));
+                    product.getMerchant(), status, codePurchase, LocalDateTime.now() ));
             Bill bill = iBillService.findByAccountAndMerchantAndCode(account.getId_account(), product.getMerchant().getId_merchant(), codePurchase);
             BillDetail billDetail = new BillDetail(product, bill, 1, product.getPriceSale(), bill.getTime_purchase());
             iBillDetailService.save(billDetail);
@@ -73,11 +72,11 @@ public class BillController {
     }
 
     @GetMapping("/all/account/{id}")
-    public ResponseEntity<List<BillDetailDTO>> getAllBillDetailByAccount(@PathVariable("id") Long id_account) {
+    public ResponseEntity<List<BillDetailDTO>> getAllBillDetailByAccount(@PathVariable("id") Long id_account){
         List<BillDetailDTO> list = iBillDetailService.getAddBillDetailByAccount(id_account);
-        if (list.isEmpty()) {
+        if (list.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
+        }else {
             return ResponseEntity.ok(list);
         }
     }
