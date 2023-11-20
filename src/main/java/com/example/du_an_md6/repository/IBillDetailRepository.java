@@ -24,6 +24,15 @@ public interface IBillDetailRepository extends JpaRepository<BillDetail, Long> {
 
     List<BillDetail> findByBill_Account_NameContainingAndBill_Merchant(String name, Merchant Merchant);
     List<BillDetail> findByBill_Account_PhoneContainingAndBill_Merchant(String name, Merchant Merchant);
+    @Query(value = "select * from bill_detail where id_product = ?", nativeQuery = true)
+    List<BillDetail> statisticsByProduct(Long id_product);
 
+    @Query(value = "select * from bill_detail as bd join bill as b on\n" +
+            "    bd.id_bill = b.id_bill where b.id_merchant = ? and b.id_status = ?", nativeQuery = true)
+    List<BillDetail> statisticsByStatus(Long id_merchant, Long id_status);
+
+    @Query(value = "select * from bill_detail as bd join bill as b on\n" +
+            "    bd.id_bill = b.id_bill where b.id_merchant = ? and b.id_account = ?", nativeQuery = true)
+    List<BillDetail> statisticsByUser(Long id_merchant, Long id_user);
 
 }
