@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import java.util.List;
@@ -35,4 +36,7 @@ public interface IBillDetailRepository extends JpaRepository<BillDetail, Long> {
             "    bd.id_bill = b.id_bill where b.id_merchant = ? and b.id_account = ?", nativeQuery = true)
     List<BillDetail> statisticsByUser(Long id_merchant, Long id_user);
 
+    //last 7
+    @Query(value = "select bd.* from bill_detail as bd join bill as b on b.id_bill = bd.id_bill where b.id_merchant = ? and bd.time_purchase between ? and ?", nativeQuery = true)
+    List<BillDetail> revenueByStartAndEndDay(Long id_merchant, LocalDateTime start, LocalDateTime end);
 }

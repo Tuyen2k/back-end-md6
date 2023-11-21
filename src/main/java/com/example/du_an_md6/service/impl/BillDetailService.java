@@ -10,6 +10,7 @@ import com.example.du_an_md6.service.IBillDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -68,5 +69,10 @@ public class BillDetailService implements IBillDetailService {
     @Override
     public List<BillDetail> findAllOrders(Long id_merchant) {
         return iBillDetailRepository.findAllOrders(id_merchant);
+    }
+
+    @Override
+    public List<BillDetail> revenueByStartAndEndDay(Long id_merchant, LocalDateTime start, LocalDateTime end) {
+        return iBillDetailRepository.revenueByStartAndEndDay(id_merchant, start, end);
     }
 }
