@@ -11,6 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 @Service
@@ -67,6 +72,16 @@ public class BillDetailService implements IBillDetailService {
     }
 
     @Override
+    public List<BillDetail> findByTimeRange(Long id_merchant,LocalDateTime startDate, LocalDateTime endDate) {
+        return iBillDetailRepository.findByTimeRange(id_merchant,startDate, endDate);
+    }
+
+    @Override
+    public List<BillDetail> findByYearAndWeekAndMerchant(Integer year, Integer week, Long idMerchant) {
+        return iBillDetailRepository.findByYearAndWeekAndMerchant(year,week,idMerchant);
+    }
+
+    @Override
     public List<BillDetail> findAllOrders(Long id_merchant) {
         return iBillDetailRepository.findAllOrders(id_merchant);
     }
@@ -75,4 +90,11 @@ public class BillDetailService implements IBillDetailService {
     public List<BillDetail> revenueByStartAndEndDay(Long id_merchant, LocalDateTime start, LocalDateTime end) {
         return iBillDetailRepository.revenueByStartAndEndDay(id_merchant, start, end);
     }
+
+    @Override
+    public List<BillDetail> findByMonthAndMerchant(Integer year, Integer month, Long idMerchant) {
+        return iBillDetailRepository.findByMonthAndMerchant(year, month, idMerchant);
+    }
+
+
 }

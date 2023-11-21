@@ -8,6 +8,7 @@ import com.example.du_an_md6.service.IBillDetailService;
 import com.example.du_an_md6.service.IMerchantService;
 import com.example.du_an_md6.service.IStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -94,4 +95,59 @@ public class BillDetailController {
             return ResponseEntity.ok(list);
         }
     }
+
+    @GetMapping("/merchant/{id_merchant}/{startDate}/{endDate}")
+    public ResponseEntity<List<BillDetail>> findByTimeRange(
+            @PathVariable("id_merchant") Long idMerchant,
+            @PathVariable("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @PathVariable("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+        List<BillDetail> billDetails = iBillDetailService.findByTimeRange(idMerchant, startDate, endDate);
+        return ResponseEntity.ok(billDetails);
+    }
+
+
+    @GetMapping("/merchant/{id_merchant}/year/{year}/week/{week}")
+    public ResponseEntity<List<BillDetail>> findByYearAndWeekAndMerchant(
+            @PathVariable("id_merchant") Long idMerchant,
+            @PathVariable("year") Integer year ,
+            @PathVariable("week")  Integer week ) {
+        List<BillDetail> billDetails = iBillDetailService.findByYearAndWeekAndMerchant(year, week, idMerchant);
+        return ResponseEntity.ok(billDetails);
+    }
+    @GetMapping("/merchant/{id_merchant}/year/{year}/month/{month}")
+    public ResponseEntity<List<BillDetail>> findMonthByMerchant(
+            @PathVariable Long id_merchant,
+            @PathVariable Integer year ,
+            @PathVariable Integer month) {
+        List<BillDetail> billDetails = iBillDetailService.findByMonthAndMerchant(year,month,id_merchant);
+        return ResponseEntity.ok(billDetails);
+    }
+
+    @GetMapping("/merchant/{id_merchant}/quarter/{valueQuarter}")
+    public ResponseEntity<List<BillDetail>> findByQuarterAndMerchant(
+            @PathVariable Long id_merchant,
+            @PathVariable Integer valueQuarter ) {
+        LocalDateTime startDate = null;
+        LocalDateTime endDate = null;
+        if (valueQuarter == 1){
+            startDate = LocalDateTime.parse("2023-01-01T00:00:00");
+            endDate = LocalDateTime.parse("2023-03-31T00:00:00");
+        } else if (valueQuarter == 2){
+            startDate = LocalDateTime.parse("2023-04-01T00:00:00");
+            endDate = LocalDateTime.parse("2023-06-30T00:00:00");
+        } else if (valueQuarter == 3){
+            startDate = LocalDateTime.parse("2023-07-01T00:00:00");
+            endDate = LocalDateTime.parse("2023-09-30T00:00:00");
+        } else if (valueQuarter == 4){
+            startDate = LocalDateTime.parse("2023-10-01T00:00:00");
+            endDate = LocalDateTime.parse("2023-12-31T00:00:00");
+        }
+        if (startDate != null){
+            List<BillDetail> billDetails = iBillDetailService.findByTimeRange(id_merchant, startDate, endDate);
+            return ResponseEntity.ok(billDetails);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
