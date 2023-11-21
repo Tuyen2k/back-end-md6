@@ -101,12 +101,39 @@ public class BillDetailController {
         return ResponseEntity.ok(billDetails);
     }
     @GetMapping("/merchant/{id_merchant}/year/{year}/month/{month}")
-    public ResponseEntity<List<BillDetail>> findByMonthAndMerchant(
-            @PathVariable("id_merchant") Long idMerchant,
-            @PathVariable("year") Integer year ,
-            @PathVariable("month")  Integer month ) {
-        List<BillDetail> billDetails = iBillDetailService.findByMonthAndMerchant(year, month, idMerchant);
+    public ResponseEntity<List<BillDetail>> findMonthByMerchant(
+            @PathVariable Long id_merchant,
+            @PathVariable Integer year ,
+            @PathVariable Integer month) {
+        List<BillDetail> billDetails = iBillDetailService.findByMonthAndMerchant(year,month,id_merchant);
         return ResponseEntity.ok(billDetails);
+    }
+
+    @GetMapping("/merchant/{id_merchant}/quarter/{valueQuarter}")
+    public ResponseEntity<List<BillDetail>> findByQuarterAndMerchant(
+            @PathVariable Long id_merchant,
+            @PathVariable Integer valueQuarter ) {
+        LocalDateTime startDate = null;
+        LocalDateTime endDate = null;
+        if (valueQuarter == 1){
+            startDate = LocalDateTime.parse("2023-01-01T00:00:00");
+            endDate = LocalDateTime.parse("2023-03-31T00:00:00");
+        } else if (valueQuarter == 2){
+            startDate = LocalDateTime.parse("2023-04-01T00:00:00");
+            endDate = LocalDateTime.parse("2023-06-30T00:00:00");
+        } else if (valueQuarter == 3){
+            startDate = LocalDateTime.parse("2023-07-01T00:00:00");
+            endDate = LocalDateTime.parse("2023-09-30T00:00:00");
+        } else if (valueQuarter == 4){
+            startDate = LocalDateTime.parse("2023-10-01T00:00:00");
+            endDate = LocalDateTime.parse("2023-12-31T00:00:00");
+        }
+        if (startDate != null){
+            List<BillDetail> billDetails = iBillDetailService.findByTimeRange(id_merchant, startDate, endDate);
+            return ResponseEntity.ok(billDetails);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

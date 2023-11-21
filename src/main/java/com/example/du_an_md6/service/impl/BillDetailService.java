@@ -89,4 +89,6 @@ public class BillDetailService implements IBillDetailService {
     public List<BillDetail> findByMonthAndMerchant(Integer year, Integer month, Long idMerchant) {
         return iBillDetailRepository.findByMonthAndMerchant(year, month, idMerchant);
     }
+
+
 }

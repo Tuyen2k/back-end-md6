@@ -57,5 +57,8 @@ public interface IBillDetailRepository extends JpaRepository<BillDetail, Long> {
             "WHERE YEAR(bd.time_purchase) = ? " +
             "AND MONTH(bd.time_purchase) = ? " +
             "AND b.id_merchant = ?", nativeQuery = true)
-    List<BillDetail> findByMonthAndMerchant( Integer year, Integer month, Long idMerchant);
+    List<BillDetail> findByMonthAndMerchant(Integer year, Integer month, Long idMerchant);
+
+
+
 }
