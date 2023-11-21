@@ -5,8 +5,10 @@ import com.example.du_an_md6.model.BillDetail;
 import com.example.du_an_md6.model.Merchant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import java.util.List;
@@ -35,4 +37,25 @@ public interface IBillDetailRepository extends JpaRepository<BillDetail, Long> {
             "    bd.id_bill = b.id_bill where b.id_merchant = ? and b.id_account = ?", nativeQuery = true)
     List<BillDetail> statisticsByUser(Long id_merchant, Long id_user);
 
+
+
+    @Query(value = "SELECT bd.* FROM bill_detail bd JOIN bill b ON bd.id_bill = b.id_bill " +
+            "WHERE b.id_merchant = ? AND bd.time_purchase BETWEEN ? AND ?", nativeQuery = true)
+    List<BillDetail> findByTimeRange(Long id_merchant,LocalDateTime startDate, LocalDateTime endDate);
+
+    @Query(value = "SELECT * FROM bill_detail bd JOIN " +
+            "bill b ON bd.id_bill = b.id_bill " +
+            "WHERE YEAR(bd.time_purchase) = ? " +
+            "AND WEEK(bd.time_purchase, 1) = ? " +
+            "AND b.id_merchant = ?", nativeQuery = true)
+    List<BillDetail> findByYearAndWeekAndMerchant( Integer year,
+                                                   Integer week,
+          Long idMerchant);
+
+    @Query(value = "SELECT bd.* FROM bill_detail bd " +
+            "JOIN bill b ON bd.id_bill = b.id_bill " +
+            "WHERE YEAR(bd.time_purchase) = ? " +
+            "AND MONTH(bd.time_purchase) = ? " +
+            "AND b.id_merchant = ?", nativeQuery = true)
+    List<BillDetail> findByMonthAndMerchant( Integer year, Integer month, Long idMerchant);
 }

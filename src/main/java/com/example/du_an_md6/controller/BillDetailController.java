@@ -7,9 +7,12 @@ import com.example.du_an_md6.service.IBillDetailService;
 import com.example.du_an_md6.service.IMerchantService;
 import com.example.du_an_md6.service.IStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 @RestController
@@ -78,4 +81,32 @@ public class BillDetailController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/merchant/{id_merchant}/{startDate}/{endDate}")
+    public ResponseEntity<List<BillDetail>> findByTimeRange(
+            @PathVariable("id_merchant") Long idMerchant,
+            @PathVariable("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @PathVariable("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+        List<BillDetail> billDetails = iBillDetailService.findByTimeRange(idMerchant, startDate, endDate);
+        return ResponseEntity.ok(billDetails);
+    }
+
+
+    @GetMapping("/merchant/{id_merchant}/year/{year}/week/{week}")
+    public ResponseEntity<List<BillDetail>> findByYearAndWeekAndMerchant(
+            @PathVariable("id_merchant") Long idMerchant,
+            @PathVariable("year") Integer year ,
+            @PathVariable("week")  Integer week ) {
+        List<BillDetail> billDetails = iBillDetailService.findByYearAndWeekAndMerchant(year, week, idMerchant);
+        return ResponseEntity.ok(billDetails);
+    }
+    @GetMapping("/merchant/{id_merchant}/year/{year}/month/{month}")
+    public ResponseEntity<List<BillDetail>> findByMonthAndMerchant(
+            @PathVariable("id_merchant") Long idMerchant,
+            @PathVariable("year") Integer year ,
+            @PathVariable("month")  Integer month ) {
+        List<BillDetail> billDetails = iBillDetailService.findByMonthAndMerchant(year, month, idMerchant);
+        return ResponseEntity.ok(billDetails);
+    }
+
 }
