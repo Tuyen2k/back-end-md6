@@ -40,4 +40,7 @@ public class Merchant {
     private Address addressShop;
     private String image;
 
+    public void setId_merchant(Long id_merchant) {
+        this.id_merchant = id_merchant;
+    }
 }
