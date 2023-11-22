@@ -55,8 +55,10 @@ public class BillController {
         return ResponseEntity.ok("Order success!");
     }
 
-    @PostMapping("/order-now/{id}")
-    public ResponseEntity<String> orderNow(@PathVariable("id") Long id_account, @RequestBody Product product) {
+    @PostMapping("/order-now/{id}/quantity/{quantity}")
+    public ResponseEntity<String> orderNow(@PathVariable("id") Long id_account,
+                                           @PathVariable("quantity") int quantity,
+                                           @RequestBody Product product) {
         String codePurchase = getCodePurchase();
         Account account = iAccountService.findById(id_account);
         if (account != null) {
@@ -64,7 +66,7 @@ public class BillController {
             iBillService.save(new Bill(account,
                     product.getMerchant(), status, codePurchase, LocalDateTime.now() ));
             Bill bill = iBillService.findByAccountAndMerchantAndCode(account.getId_account(), product.getMerchant().getId_merchant(), codePurchase);
-            BillDetail billDetail = new BillDetail(product, bill, 1, product.getPriceSale(), bill.getTime_purchase());
+            BillDetail billDetail = new BillDetail(product, bill, quantity, product.getPriceSale(), bill.getTime_purchase());
             iBillDetailService.save(billDetail);
             return ResponseEntity.ok("Order success!");
         }
