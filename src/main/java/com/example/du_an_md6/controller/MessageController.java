@@ -7,6 +7,7 @@ import com.example.du_an_md6.service.IMessageService;
 import com.example.du_an_md6.service.INotificationService;
 import com.example.du_an_md6.service.impl.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
@@ -62,4 +65,16 @@ public class MessageController {
         Account account = accountService.findById(id_account);
         return ResponseEntity.ok(iNotificationService.getAllByRecAcc(account));
     }
+
+    @GetMapping("/notification/{id}")
+    public ResponseEntity<Void> updateWatchNotification(@PathVariable("id") Long id_notification){
+        Notification notification = iNotificationService.findById(id_notification);
+        if (!Objects.equals(notification, null)){
+            notification.setWatch(true);
+            iNotificationService.save(notification);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 }
