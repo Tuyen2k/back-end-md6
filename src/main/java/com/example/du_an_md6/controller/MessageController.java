@@ -1,15 +1,21 @@
 package com.example.du_an_md6.controller;
 
+import com.example.du_an_md6.model.Account;
 import com.example.du_an_md6.model.Message;
+import com.example.du_an_md6.model.Notification;
 import com.example.du_an_md6.service.IMessageService;
+import com.example.du_an_md6.service.INotificationService;
+import com.example.du_an_md6.service.impl.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -18,6 +24,12 @@ public class MessageController {
 
     @Autowired
     private IMessageService iMessageService;
+
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private INotificationService iNotificationService;
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
@@ -34,5 +46,20 @@ public class MessageController {
         String user = message.getReceiverAcc().getName() + message.getReceiverAcc().getId_account();
         simpMessagingTemplate.convertAndSendToUser(user,"/private",message);
         return message;
+    }
+
+    @MessageMapping("/private-notification")
+    public Notification recNotification(@Payload Notification notification){
+        notification.setTime(LocalDateTime.now());
+        iNotificationService.save(notification);
+        String user = notification.getRecAcc().getName() + notification.getRecAcc().getId_account();
+        simpMessagingTemplate.convertAndSendToUser(user, "/private-notification", notification);
+        return notification;
+    }
+
+    @GetMapping("/notification/account/{id}")
+    public ResponseEntity<List<Notification>> getNotificationByAccount(@PathVariable("id") Long id_account){
+        Account account = accountService.findById(id_account);
+        return ResponseEntity.ok(iNotificationService.getAllByRecAcc(account));
     }
 }

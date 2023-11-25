@@ -27,6 +27,8 @@ public class BillController {
     private ICartDetailService iCartDetailService;
     @Autowired
     private IAccountService iAccountService;
+    @Autowired
+    private IProductService iProductService;
 
 
     private String getCodePurchase() {
@@ -50,6 +52,7 @@ public class BillController {
             }
             BillDetail billDetail = new BillDetail(cartDetail.getProduct(), bill, cartDetail.getQuantity(), cartDetail.getPrice(), bill.getTime_purchase());
             iBillDetailService.save(billDetail);
+            iProductService.updatePurchase(cartDetail.getProduct().getId_product(), cartDetail.getQuantity());
             iCartDetailService.deleteCartDetail(cartDetail.getId_cartDetail());
         }
         return ResponseEntity.ok("Order success!");
@@ -68,6 +71,7 @@ public class BillController {
             Bill bill = iBillService.findByAccountAndMerchantAndCode(account.getId_account(), product.getMerchant().getId_merchant(), codePurchase);
             BillDetail billDetail = new BillDetail(product, bill, quantity, product.getPriceSale(), bill.getTime_purchase());
             iBillDetailService.save(billDetail);
+            iProductService.updatePurchase(product.getId_product(), quantity);
             return ResponseEntity.ok("Order success!");
         }
         return ResponseEntity.ok("Order error!");
