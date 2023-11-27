@@ -27,6 +27,8 @@ public class BillController {
     private ICartDetailService iCartDetailService;
     @Autowired
     private IAccountService iAccountService;
+    @Autowired
+    private IProductService iProductService;
 
 
     private String getCodePurchase() {
@@ -50,13 +52,16 @@ public class BillController {
             }
             BillDetail billDetail = new BillDetail(cartDetail.getProduct(), bill, cartDetail.getQuantity(), cartDetail.getPrice(), bill.getTime_purchase());
             iBillDetailService.save(billDetail);
+            iProductService.updatePurchase(cartDetail.getProduct().getId_product(), cartDetail.getQuantity());
             iCartDetailService.deleteCartDetail(cartDetail.getId_cartDetail());
         }
         return ResponseEntity.ok("Order success!");
     }
 
-    @PostMapping("/order-now/{id}")
-    public ResponseEntity<String> orderNow(@PathVariable("id") Long id_account, @RequestBody Product product) {
+    @PostMapping("/order-now/{id}/quantity/{quantity}")
+    public ResponseEntity<String> orderNow(@PathVariable("id") Long id_account,
+                                           @PathVariable("quantity") int quantity,
+                                           @RequestBody Product product) {
         String codePurchase = getCodePurchase();
         Account account = iAccountService.findById(id_account);
         if (account != null) {
@@ -64,8 +69,9 @@ public class BillController {
             iBillService.save(new Bill(account,
                     product.getMerchant(), status, codePurchase, LocalDateTime.now() ));
             Bill bill = iBillService.findByAccountAndMerchantAndCode(account.getId_account(), product.getMerchant().getId_merchant(), codePurchase);
-            BillDetail billDetail = new BillDetail(product, bill, 1, product.getPriceSale(), bill.getTime_purchase());
+            BillDetail billDetail = new BillDetail(product, bill, quantity, product.getPriceSale(), bill.getTime_purchase());
             iBillDetailService.save(billDetail);
+            iProductService.updatePurchase(product.getId_product(), quantity);
             return ResponseEntity.ok("Order success!");
         }
         return ResponseEntity.ok("Order error!");
@@ -101,6 +107,19 @@ public class BillController {
             bill.setStatus(status);
             iBillService.save(bill);
             return ResponseEntity.ok("Cancel success!");
+        }
+    }
+
+    @PostMapping("/update-status/{id}")
+    public ResponseEntity<String> updateStatusBill(@PathVariable("id") Long id_bill,
+                                                   @RequestBody Status status){
+        Bill bill = iBillService.findById(id_bill);
+        if (bill == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            bill.setStatus(status);
+            iBillService.save(bill);
+            return ResponseEntity.ok("Update status success!");
         }
     }
 }

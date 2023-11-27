@@ -26,4 +26,6 @@ public interface IBillDetailService extends IGenerateService<BillDetail> {
 
 
 
+
+    List<BillDetail> revenueByStartAndEndDay(Long id_merchant, LocalDateTime start, LocalDateTime end);
 }

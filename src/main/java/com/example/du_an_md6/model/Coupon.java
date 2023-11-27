@@ -15,7 +15,6 @@ public class Coupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty
-    @Column(unique = true)
     private String name;
     private String image;
     private Double discountAmount;

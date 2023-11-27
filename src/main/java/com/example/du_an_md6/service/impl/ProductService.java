@@ -109,4 +109,16 @@ public class ProductService implements IProductService {
     public List<Product> findAllByMerchantAndNameProduct(Long id_merchant, String name) {
         return productRepository.findAllByMerchantAndNameProduct(id_merchant, "%" + name + "%");
     }
+
+    @Override
+    public void updatePurchase(Long id_product, int quantity) {
+        Product product = productRepository.findById(id_product).orElse(null);
+        if (product != null) {
+            int currentPurchase = product.getPurchase();
+            int newPurchase = currentPurchase + quantity;
+            product.setPurchase(newPurchase);
+            productRepository.save(product);
+        }
+    }
+
 }

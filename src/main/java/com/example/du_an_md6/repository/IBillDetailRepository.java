@@ -37,6 +37,9 @@ public interface IBillDetailRepository extends JpaRepository<BillDetail, Long> {
             "    bd.id_bill = b.id_bill where b.id_merchant = ? and b.id_account = ?", nativeQuery = true)
     List<BillDetail> statisticsByUser(Long id_merchant, Long id_user);
 
+    //last 7
+    @Query(value = "select bd.* from bill_detail as bd join bill as b on b.id_bill = bd.id_bill where b.id_merchant = ? and bd.time_purchase between ? and ?", nativeQuery = true)
+    List<BillDetail> revenueByStartAndEndDay(Long id_merchant, LocalDateTime start, LocalDateTime end);
 
 
     @Query(value = "SELECT bd.* FROM bill_detail bd JOIN bill b ON bd.id_bill = b.id_bill " +

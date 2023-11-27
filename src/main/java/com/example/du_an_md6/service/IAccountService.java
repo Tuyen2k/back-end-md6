@@ -11,5 +11,6 @@ public interface IAccountService extends IGenerateService<Account> {
     List<AccountDTO> findAllDTO();
     Account findByPhone(String phone);
     Account findByEmail(String email);
+    AccountDTO findAccountByMerchant(Long id_merchant);
 
 }

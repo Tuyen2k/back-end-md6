@@ -3,6 +3,7 @@ import com.example.du_an_md6.model.Bill;
 import com.example.du_an_md6.model.BillDetail;
 import com.example.du_an_md6.model.Merchant;
 import com.example.du_an_md6.model.Status;
+import com.example.du_an_md6.model.dto.BillDetailDTO;
 import com.example.du_an_md6.service.IBillDetailService;
 import com.example.du_an_md6.service.IMerchantService;
 import com.example.du_an_md6.service.IStatusService;
@@ -79,6 +80,19 @@ public class BillDetailController {
             return new ResponseEntity<>(iBillDetailService.statisticsByUser(id_merchant, id_user), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/revenue-last-seven/{id}")
+    public ResponseEntity<List<BillDetail>> revenueLastSeven(@PathVariable("id") Long id_merchant){
+        LocalDateTime end = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime start = end.minusDays(7);
+
+        List<BillDetail> list = iBillDetailService.revenueByStartAndEndDay(id_merchant, start, end);
+        if (list == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            return ResponseEntity.ok(list);
         }
     }
 

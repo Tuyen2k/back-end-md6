@@ -90,5 +90,8 @@ public class AccountService implements UserDetailsService, IAccountService {
     }
 
 
-
+    @Override
+    public AccountDTO findAccountByMerchant(Long id_merchant) {
+        return accountMapper.toDto(iAccountRepository.findAccountByMerchant(id_merchant));
+    }
 }
