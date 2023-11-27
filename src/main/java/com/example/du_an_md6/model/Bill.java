@@ -22,6 +22,7 @@ public class Bill {
     private Status status;
     private String codePurchase;
     private LocalDateTime time_purchase;
+    private double discount;
 
     public Bill() {
     }
