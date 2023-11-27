@@ -2,6 +2,7 @@ package com.example.du_an_md6.controller;
 
 import com.example.du_an_md6.model.*;
 import com.example.du_an_md6.model.dto.BillDetailDTO;
+import com.example.du_an_md6.model.dto.OrderData;
 import com.example.du_an_md6.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 @RestController
@@ -37,8 +40,11 @@ public class BillController {
     }
 
     @PostMapping("/order")
-    public ResponseEntity<String> order(@RequestBody List<CartDetail> cartDetailList) {
+    public ResponseEntity<String> order(@RequestBody() OrderData orderData) {
+        List<CartDetail> cartDetailList = orderData.getCartDetailList();
+        List<Coupon> coupons = orderData.getCoupons();
         String codePurchase = getCodePurchase();
+        List<Bill> bills = new ArrayList<>();
         for (CartDetail cartDetail : cartDetailList) {
             Bill bill = iBillService.findByAccountAndMerchantAndCode(cartDetail.getCart().getAccount().getId_account(),
                     cartDetail.getCart().getMerchant().getId_merchant(), codePurchase);
@@ -50,11 +56,24 @@ public class BillController {
                         cartDetail.getCart().getMerchant().getId_merchant(), codePurchase);
 
             }
+
             BillDetail billDetail = new BillDetail(cartDetail.getProduct(), bill, cartDetail.getQuantity(), cartDetail.getPrice(), bill.getTime_purchase());
             iBillDetailService.save(billDetail);
             iProductService.updatePurchase(cartDetail.getProduct().getId_product(), cartDetail.getQuantity());
             iCartDetailService.deleteCartDetail(cartDetail.getId_cartDetail());
+
+            boolean flag = true;
+            for(Bill billDB: bills){
+                if (Objects.equals(billDB.getId_bill(), bill.getId_bill())) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag){
+                bills.add(bill);
+            }
         }
+        iBillService.handleDiscount(bills, coupons);
         return ResponseEntity.ok("Order success!");
     }
 

@@ -63,5 +63,6 @@ public interface IBillDetailRepository extends JpaRepository<BillDetail, Long> {
     List<BillDetail> findByMonthAndMerchant(Integer year, Integer month, Long idMerchant);
 
 
-
+    @Query(value = "select * from bill_detail where id_bill = ?", nativeQuery = true)
+    List<BillDetail> findAllByBill(Long id_bill);
 }

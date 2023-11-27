@@ -2,21 +2,23 @@ package com.example.du_an_md6.service.impl;
 
 import com.example.du_an_md6.model.Account;
 import com.example.du_an_md6.model.Bill;
+import com.example.du_an_md6.model.BillDetail;
+import com.example.du_an_md6.model.Coupon;
+import com.example.du_an_md6.repository.IBillDetailRepository;
 import com.example.du_an_md6.repository.IBillRepository;
 import com.example.du_an_md6.service.IBillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class BillService implements IBillService {
     @Autowired
     private IBillRepository iBillRepository;
+    @Autowired
+    private IBillDetailRepository iBillDetailRepository;
 
     @Override
     public List<Bill> findAll() {
@@ -55,6 +57,30 @@ public class BillService implements IBillService {
         }
 
         return filteredBills;
+    }
+
+    @Override
+    public void handleDiscount(List<Bill> bills, List<Coupon> coupons){
+        double discount = 0.0;
+        for (Coupon coupon : coupons){
+            for (Bill bill: bills){
+                if (Objects.equals(coupon.getMerchant().getId_merchant(), bill.getMerchant().getId_merchant())){
+                    if (!Objects.equals(coupon.getDiscountAmount(), null)){
+                        discount = coupon.getDiscountAmount();
+                    }else {
+                        List<BillDetail> billDetails = iBillDetailRepository.findAllByBill(bill.getId_bill());
+                        double total = 0.0;
+                        for(BillDetail billDetail: billDetails){
+                            total += billDetail.getPrice() * billDetail.getQuantity();
+                        }
+                        discount = total*coupon.getPercentageDiscount()/100;
+                    }
+                }
+                bill.setDiscount(discount);
+                iBillRepository.save(bill);
+            }
+        }
+
     }
 
 }
