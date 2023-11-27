@@ -34,4 +34,13 @@ public class Bill {
         this.codePurchase = codePurchase;
         this.time_purchase = time;
     }
+
+    public Bill(Account account, Merchant merchant, Status status, String codePurchase, LocalDateTime time_purchase, double discount) {
+        this.account = account;
+        this.merchant = merchant;
+        this.status = status;
+        this.codePurchase = codePurchase;
+        this.time_purchase = time_purchase;
+        this.discount = discount;
+    }
 }

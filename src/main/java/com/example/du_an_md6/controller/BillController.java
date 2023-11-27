@@ -77,16 +77,17 @@ public class BillController {
         return ResponseEntity.ok("Order success!");
     }
 
-    @PostMapping("/order-now/{id}/quantity/{quantity}")
+    @PostMapping("/order-now/{id}/quantity/{quantity}/discount/{discount}")
     public ResponseEntity<String> orderNow(@PathVariable("id") Long id_account,
                                            @PathVariable("quantity") int quantity,
+                                           @PathVariable("discount") double discount,
                                            @RequestBody Product product) {
         String codePurchase = getCodePurchase();
         Account account = iAccountService.findById(id_account);
         if (account != null) {
             Status status = iStatusService.findById(1L);
             iBillService.save(new Bill(account,
-                    product.getMerchant(), status, codePurchase, LocalDateTime.now() ));
+                    product.getMerchant(), status, codePurchase, LocalDateTime.now(),  discount));
             Bill bill = iBillService.findByAccountAndMerchantAndCode(account.getId_account(), product.getMerchant().getId_merchant(), codePurchase);
             BillDetail billDetail = new BillDetail(product, bill, quantity, product.getPriceSale(), bill.getTime_purchase());
             iBillDetailService.save(billDetail);
