@@ -24,4 +24,7 @@ public interface IProductRepository  extends JpaRepository<Product,Long> {
     List<Product> findProductByNameContains(String name);
     @Query(value = "select * from product as p join product_category as pc on p.id_product = pc.id_product where pc.id_category = ? group by p.id_product",nativeQuery = true)
     List<Product> findProductByCategory(Long id_category);
+
+    @Query(value = "select * from product where is_delete = FALSE", nativeQuery = true)
+    List<Product> findAllByActivity();
 }

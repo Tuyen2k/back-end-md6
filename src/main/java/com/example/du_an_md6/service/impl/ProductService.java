@@ -32,7 +32,7 @@ public class ProductService implements IProductService {
     }
     @Override
     public List<ProductDTO> getAll(){
-        return productMapper.toListDto(productRepository.findAll());
+        return productMapper.toListDto(productRepository.findAllByActivity());
     }
 
     @Override
